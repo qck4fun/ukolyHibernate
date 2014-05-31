@@ -7,6 +7,7 @@
 package Main;
 
 import GUI.MainWindow;
+import Other.LoadFromDb;
 import javax.swing.SwingUtilities;
 
 /**
@@ -22,6 +23,7 @@ public class Main {
             }
         });
         new TestDataInsert(); 
-       //TODO thread, kterej loaduje data z db
+        Thread t1 = new Thread(new LoadFromDb());
+        t1.start();
     }
 }
