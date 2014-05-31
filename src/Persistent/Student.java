@@ -1,0 +1,126 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package Persistent;
+
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+
+/**
+ *
+ * @author adam
+ */
+public class Student {
+    
+    private Long id;
+    
+    private String firstName;
+    private String lastName;
+    
+    private Set<Task> tasks;
+    private Set<Subject> subjects;
+    
+    public Student() {
+        super();
+    }
+    
+    public Student(String name, String lastName) {
+        this.firstName = name;
+        this.lastName = lastName;
+        
+        tasks = new HashSet<Task>();
+        subjects = new HashSet<Subject>();
+    }
+    
+    public boolean addTask(Task task) {
+        return tasks.add(task);
+    }
+    
+    public boolean removeTask(Task task) {
+        return getTasks().remove(task);
+    }
+    
+    public boolean addSubject(Subject subject) {
+        return subjects.add(subject);
+    }
+    
+    public boolean removeSubject(Subject subject) {
+        return getSubjects().remove(subject);
+    }
+    
+    @Override
+    public String toString() {
+        return getFirstName() + "" + getLastName();
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 97 * hash + Objects.hashCode(this.firstName);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Student other = (Student) obj;
+        if (!Objects.equals(this.firstName, other.firstName)) {
+            return false;
+        }
+        if (!Objects.equals(this.lastName, other.lastName)) {
+            return false;
+        }
+        return true;
+    }
+    
+    //GETTERS and SETTERS
+    
+    public Long getId() {
+        return id;
+    }
+
+    private void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String name) {
+        this.firstName = name;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public Set<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(Set<Task> tasks) {
+        this.tasks = tasks;
+    }
+
+    public Set<Subject> getSubjects() {
+        return subjects;
+    }
+
+    public void setSubjects(Set<Subject> subjects) {
+        this.subjects = subjects;
+    }
+}
