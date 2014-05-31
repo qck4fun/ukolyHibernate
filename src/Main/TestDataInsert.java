@@ -25,8 +25,8 @@ public class TestDataInsert {
 
     public TestDataInsert() {
         createDummyData();
-        addStudentsDetails();
         insertToDb();
+        addStudentsDetails();
     }
 
     private void createDummyData() {
@@ -41,15 +41,15 @@ public class TestDataInsert {
             new Task("Biceps", "Skotova lavice", subjects.get(1), null),
             new Task("Mrdačka", "Poloha pejsek", subjects.get(2), null),};
         tasks = Arrays.asList(task);
-    }
-    
-    private void addStudentsDetails() {
+        
         Student[] stud = {
             new Student("Jarmila", "Pavlíčková"),
             new Student("Pepa", "Novák"),
             new Student("Luboš", "Pavlíček"),};
         students = Arrays.asList(stud);
-        
+    }
+    
+    private void addStudentsDetails() {
         students.get(0).addSubject(subjects.get(0));
         students.get(0).addTask(tasks.get(2));
         students.get(1).addSubject(subjects.get(1));
@@ -62,8 +62,8 @@ public class TestDataInsert {
         for(Student student : students) {
             session.saveOrUpdate(student);
         }
+        session.flush();
         session.getTransaction().commit();
-        session.close();
     }
     
     private void insertToDb() {
@@ -72,8 +72,14 @@ public class TestDataInsert {
         for(Subject subject : subjects) {
             session.saveOrUpdate(subject);
         }
+        session.flush();
         session.getTransaction().commit();
         session.beginTransaction();
+        for(Task task : tasks) {
+            session.saveOrUpdate(task);
+        }
+        session.flush();
+        session.getTransaction().commit();
         session.close();
     }
 }
