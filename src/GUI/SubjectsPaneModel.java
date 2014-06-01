@@ -29,7 +29,7 @@ public class SubjectsPaneModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         Subject subject = LocalDataStorage.subjectsList.get(rowIndex);
-        Object[] values = new Object[]{subject.getId(), subject.getName(), subject.getCredit(), subject.getStudent()};
+        Object[] values = new Object[]{subject.getId(), subject.getName(), subject.getCredit(), subject.getStudent().getFirstName() + " " + subject.getStudent().getLastName()};
         return values[columnIndex];
     }
 
