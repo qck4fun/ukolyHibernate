@@ -17,13 +17,13 @@ import javax.swing.SwingUtilities;
 public class Main {
     
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-               //new MainWindow();
-            }
-        });
         new TestDataInsert(); 
         Thread t1 = new Thread(new LoadFromDb());
         t1.start();
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+               new MainWindow();
+            }
+        });
     }
 }

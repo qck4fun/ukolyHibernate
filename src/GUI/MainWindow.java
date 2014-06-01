@@ -6,19 +6,30 @@
 
 package GUI;
 
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
+import javax.swing.*;
 
 /**
  *
  * @author adam
  */
-public class MainWindow extends JFrame{
+public class MainWindow extends JFrame {
+    
+    private JTabbedPane tabbedPane;
+    
+    private JPanel studentsPanel;
+    private JPanel subjectsPanel;
+    private JPanel tasksPanel;
+    
+    private JTable studentsTable;
+    private JTable subjectsTable;
+    private JTable tasksTable;
+    
+    private StudentsPaneModel studentsPaneModel;
+    private SubjectsPaneModel subjectsPaneModel;
+    private TasksPaneModel tasksPaneModel;
     
     public MainWindow() {
         init();
-        createMenuBar();
     }
     
     private void init() {
@@ -26,16 +37,44 @@ public class MainWindow extends JFrame{
         setSize(400, 400);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        tabbedPane = new JTabbedPane();
+        
+        initStudentsPane();
+        initSubjectsPane();
+        initTasksPane();
+        
+        tabbedPane.addTab("Studenti", studentsPanel);
+        tabbedPane.addTab("Předměty", subjectsPanel);
+        tabbedPane.addTab("Úkoly", tasksPanel);
+        
+        setContentPane(tabbedPane);
     }
     
-    private void createMenuBar() {
-        JMenuBar menuBar = new JMenuBar();
-        JMenu students = new JMenu("Studenti");
-        JMenu subjects = new JMenu("Předměty");
-        JMenu tasks = new JMenu("Úkoly");
-        menuBar.add(students);
-        menuBar.add(subjects);
-        menuBar.add(tasks);
-        setJMenuBar(menuBar);
+    private void initStudentsPane() {
+        studentsPanel = new JPanel();
+        studentsPanel.setLayout(new BoxLayout(studentsPanel, BoxLayout.PAGE_AXIS));
+        studentsPaneModel = new StudentsPaneModel();
+        studentsTable = new JTable(studentsPaneModel);
+        studentsPanel.add(new JScrollPane(studentsTable));
+        studentsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+    }
+    
+    private void initSubjectsPane() {
+        subjectsPanel = new JPanel();
+        subjectsPanel.setLayout(new BoxLayout(subjectsPanel, BoxLayout.PAGE_AXIS));
+        subjectsPaneModel = new SubjectsPaneModel();
+        subjectsTable = new JTable(subjectsPaneModel);
+        subjectsPanel.add(new JScrollPane(subjectsTable));
+        subjectsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+    }
+    
+    private void initTasksPane() {
+        tasksPanel = new JPanel();
+        tasksPanel.setLayout(new BoxLayout(tasksPanel, BoxLayout.PAGE_AXIS));
+        tasksPaneModel = new TasksPaneModel();
+        tasksTable = new JTable(tasksPaneModel);
+        tasksPanel.add(new JScrollPane(tasksTable));
+        tasksTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
     }
 }

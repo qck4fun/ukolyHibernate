@@ -17,5 +17,7 @@
                           column="CREDIT" 
                           not-null="true">
 		</property>
+                <many-to-one name="Student">
+                </many-to-one>
 	</class>
 </hibernate-mapping>

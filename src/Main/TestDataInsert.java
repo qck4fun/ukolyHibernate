@@ -30,23 +30,23 @@ public class TestDataInsert {
     }
 
     private void createDummyData() {
-        Subject[] sub = {
-            new Subject("Programování", 6),
-            new Subject("Tělocvik", 10),
-            new Subject("Sexclass", 100),};
-        subjects = Arrays.asList(sub);
-        
-        Task[] task = {
-            new Task("Úkol 1", "Dolování z DB", subjects.get(0), null),
-            new Task("Biceps", "Skotova lavice", subjects.get(1), null),
-            new Task("Mrdačka", "Poloha pejsek", subjects.get(2), null),};
-        tasks = Arrays.asList(task);
-        
         Student[] stud = {
             new Student("Jarmila", "Pavlíčková"),
             new Student("Pepa", "Novák"),
             new Student("Luboš", "Pavlíček"),};
         students = Arrays.asList(stud);
+        
+        Subject[] sub = {
+            new Subject("Programování", 6, students.get(0)),
+            new Subject("Tělocvik", 10, students.get(0)),
+            new Subject("Sexclass", 100, students.get(0))};
+        subjects = Arrays.asList(sub);
+        
+        Task[] task = {
+            new Task("Úkol 1", "Dolování z DB", subjects.get(0), students.get(0)),
+            new Task("Biceps", "Skotova lavice", subjects.get(1), students.get(1)),
+            new Task("Mrdačka", "Poloha pejsek", subjects.get(2), students.get(2)),};
+        tasks = Arrays.asList(task);
     }
     
     private void addStudentsDetails() {
@@ -68,6 +68,13 @@ public class TestDataInsert {
     
     private void insertToDb() {
         Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        
+        for(Student student : students) {
+            session.saveOrUpdate(student);
+        }
+        session.flush();
+        session.getTransaction().commit();
         session.beginTransaction();
         for(Subject subject : subjects) {
             session.saveOrUpdate(subject);

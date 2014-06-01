@@ -30,7 +30,7 @@ public class Task {
         this.name = name;
         this.topic = topic;
         this.subject = subject;
-        this.student = null;
+        this.student = student;
     }
     
     @Override

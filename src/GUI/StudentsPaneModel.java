@@ -5,15 +5,16 @@
 package GUI;
 
 import Other.LocalDataStorage;
+import Persistent.Student;
 import javax.swing.table.AbstractTableModel;
 
 /**
  *
  * @author adam
  */
-public class studentsPane extends AbstractTableModel {
+public class StudentsPaneModel extends AbstractTableModel {
     
-    public final static String[] columnName = {"Jméno", "Příjmení"};
+    public final static String[] columnName = {"ID student", "Jméno", "Příjmení"};
 
     @Override
     public int getRowCount() {
@@ -22,12 +23,14 @@ public class studentsPane extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return 2;
+        return 3;
     }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) 
-{        return LocalDataStorage.studentsList.get(rowIndex);
+{       Student student = LocalDataStorage.studentsList.get(rowIndex);
+        Object[] values = new Object[] {student.getId(), student.getFirstName(), student.getLastName()};
+        return values[columnIndex];
     }
     
     public String getColumnName(int column) {

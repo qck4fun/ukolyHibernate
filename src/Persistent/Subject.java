@@ -19,13 +19,16 @@ public class Subject {
     private String name;
     private int credit;
     
+    private Student student;
+    
     public Subject() {
         super();
     }
     
-    public Subject(String name, int credit) {
+    public Subject(String name, int credit, Student student) {
         this.name = name;
         this.credit = credit;
+        this.student = student;
     }
 
     @Override
@@ -79,5 +82,13 @@ public class Subject {
 
     public void setCredit(int credit) {
         this.credit = credit;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
     }
 }
