@@ -29,7 +29,7 @@ public class TasksPaneModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         Task task = LocalDataStorage.tasksList.get(rowIndex);
-        Object[] values = {task.getId(), task.getName(), task.getTopic(), task.getStudent().getFirstName() + " " + task.getStudent().getLastName(), task.getSubject()};
+        Object[] values = {task.getId(), task.getName(), task.getTopic(), task.getStudent(), task.getSubject()};
         return values[columnIndex];
     }
     
