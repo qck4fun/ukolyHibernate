@@ -14,7 +14,7 @@ import javax.swing.table.AbstractTableModel;
  */
 public class SubjectsPaneModel extends AbstractTableModel {
     
-    public static final String[] columnName =  {"ID předmět", "Název předmětu", "Počet kreditů", "Student"};
+    public static final String[] columnName =  {"ID předmět", "Název předmětu", "Počet kreditů"};
 
     @Override
     public int getRowCount() {
@@ -23,13 +23,13 @@ public class SubjectsPaneModel extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return 4;
+        return 3;
     }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         Subject subject = LocalDataStorage.subjectsList.get(rowIndex);
-        Object[] values = new Object[]{subject.getId(), subject.getName(), subject.getCredit(), subject.getStudent().getFirstName() + " " + subject.getStudent().getLastName()};
+        Object[] values = new Object[]{subject.getId(), subject.getName(), subject.getCredit()};
         return values[columnIndex];
     }
 

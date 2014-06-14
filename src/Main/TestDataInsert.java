@@ -37,9 +37,9 @@ public class TestDataInsert {
         students = Arrays.asList(stud);
         
         Subject[] sub = {
-            new Subject("Programování", 6, students.get(0)),
-            new Subject("Tělocvik", 10, students.get(0)),
-            new Subject("Sexclass", 100, students.get(0))};
+            new Subject("Programování", 6),
+            new Subject("Tělocvik", 10),
+            new Subject("Sexclass", 100)};
         subjects = Arrays.asList(sub);
         
         Task[] task = {
