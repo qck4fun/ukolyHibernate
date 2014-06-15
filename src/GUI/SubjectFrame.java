@@ -27,7 +27,7 @@ public class SubjectFrame extends javax.swing.JFrame {
         initComponents();
         setTitle("Nový předmět");
     }
-    
+
     public SubjectFrame(SubjectsPaneModel subjectsPaneModel, Subject subject) {
         this.subjectsPaneModel = subjectsPaneModel;
         this.subject = subject;
@@ -136,19 +136,20 @@ public class SubjectFrame extends javax.swing.JFrame {
     private void saveSubject(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveSubject
         if (checkInputData()) {
             int existence = LocalDataStorage.subjectsList.lastIndexOf(subject);
-            if(existence == -1) {
-            subject = new Subject(name.getText(), Integer.parseInt(credits.getText()));
+            if (existence == -1) {
+                subject = new Subject(name.getText(), Integer.parseInt(credits.getText()));
+            }
             if (LocalDataStorage.addSubject(subject)) {
                 subjectsPaneModel.fireTableDataChanged();
                 name.setText("");
                 credits.setText("");
                 new Thread(new SaveToDb(subject)).start();
-            }
-            else {
+            } else {
                 errorMsg = "Takový předmět již v databázi existuje";
                 JOptionPane.showMessageDialog(this, errorMsg, "Chyba na vstupu", JOptionPane.ERROR_MESSAGE);
             }
-        } else {
+        }
+        else {
             JOptionPane.showMessageDialog(this, errorMsg, "Chyba na vstupu", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_saveSubject
