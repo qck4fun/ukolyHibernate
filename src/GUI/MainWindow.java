@@ -6,6 +6,10 @@
 
 package GUI;
 
+import Other.LocalDataStorage;
+import Persistent.Subject;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 
 /**
@@ -27,6 +31,15 @@ public class MainWindow extends JFrame {
     private StudentsPaneModel studentsPaneModel;
     private SubjectsPaneModel subjectsPaneModel;
     private TasksPaneModel tasksPaneModel;
+    
+    private JButton changeStudent;
+    private JButton removeStudent;
+    
+    private JButton changeSubject;
+    private JButton removeSubject;
+    
+    private JButton changeTask;
+    private JButton removeTask;
     
     public MainWindow() {
         init();
@@ -58,6 +71,42 @@ public class MainWindow extends JFrame {
         studentsTable = new JTable(studentsPaneModel);
         studentsPanel.add(new JScrollPane(studentsTable));
         studentsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS));
+        JButton addStudent = new JButton("Přidat studenta");
+        addStudent.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        });
+        
+        changeStudent = new JButton("Upravit studenta");
+        changeStudent.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        });
+        
+        removeStudent = new JButton("Smazat studenta");
+        removeStudent.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        });
+        
+        buttonPanel.add(addStudent);
+        buttonPanel.add(Box.createGlue());
+        buttonPanel.add(changeStudent);
+        buttonPanel.add(Box.createGlue());
+        buttonPanel.add(removeStudent);
+        studentsPanel.add(buttonPanel);
     }
     
     private void initSubjectsPane() {
@@ -67,7 +116,46 @@ public class MainWindow extends JFrame {
         subjectsTable = new JTable(subjectsPaneModel);
         subjectsPanel.add(new JScrollPane(subjectsTable));
         subjectsTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-    }
+        
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS));
+        JButton addSubject = new JButton("Přidat předmět");
+        addSubject.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new SubjectFrame(subjectsPaneModel).setVisible(true);
+                //TODO proč to má tak složitě?
+            }
+        });
+        
+        changeSubject = new JButton("Upravit předmět");
+        changeSubject.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String subjectName = subjectsTable.getModel().getValueAt(subjectsTable.getSelectedRow(), 1).toString();
+                Subject subject = LocalDataStorage.getSubjectName(subjectName);
+                new SubjectFrame(subjectsPaneModel, subject).setVisible(true);
+            }
+        });
+        
+        removeSubject = new JButton("Smazat předmět");
+        removeSubject.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        });
+        
+        buttonPanel.add(addSubject);
+        buttonPanel.add(Box.createGlue());
+        buttonPanel.add(changeSubject);
+        buttonPanel.add(Box.createGlue());
+        buttonPanel.add(removeSubject);
+        subjectsPanel.add(buttonPanel);
+   }
     
     private void initTasksPane() {
         tasksPanel = new JPanel();
@@ -76,5 +164,41 @@ public class MainWindow extends JFrame {
         tasksTable = new JTable(tasksPaneModel);
         tasksPanel.add(new JScrollPane(tasksTable));
         tasksTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS));
+        JButton addTask = new JButton("Přidat úkol");
+        addTask.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        });
+        
+        changeTask = new JButton("Změnit úkol");
+        changeTask.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        });
+        
+        removeTask = new JButton("Smazat úkol");
+        removeTask.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        });
+        
+        buttonPanel.add(addTask);
+        buttonPanel.add(Box.createGlue());
+        buttonPanel.add(changeTask);
+        buttonPanel.add(Box.createGlue());
+        buttonPanel.add(removeTask);
+        tasksPanel.add(buttonPanel);
     }
 }
