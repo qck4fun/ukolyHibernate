@@ -6,7 +6,10 @@
 
 package Persistent;
 
+import Persistent.Task;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  *
@@ -17,7 +20,9 @@ public class Subject {
     private Long id;
     
     private String name;
-    private int credit;
+    private int credits;
+    
+    private Set<Task> tasks;
     
     public Subject() {
         super();
@@ -25,7 +30,17 @@ public class Subject {
     
     public Subject(String name, int credit) {
         this.name = name;
-        this.credit = credit;
+        this.credits = credit;
+        
+        tasks = new HashSet<Task>();
+    }
+    
+    public boolean addTask(Task task) {
+        return tasks.add(task);
+    }
+    
+    public boolean removeTask(Task task) {
+        return getTasks().remove(task);
     }
 
     @Override
@@ -73,11 +88,19 @@ public class Subject {
         this.name = name;
     }
 
-    public int getCredit() {
-        return credit;
+    public int getCredits() {
+        return credits;
     }
 
-    public void setCredit(int credit) {
-        this.credit = credit;
+    public void setCredits(int credits) {
+        this.credits = credits;
+    }
+
+    public Set<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(Set<Task> tasks) {
+        this.tasks = tasks;
     }
 }

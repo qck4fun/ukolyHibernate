@@ -4,12 +4,7 @@
  */
 package GUI;
 
-import Other.LocalDataStorage; 
-import java.awt.event.ActionEvent; 
-import javax.swing.JButton; 
-import javax.swing.JFrame; 
-import javax.swing.JLabel; 
-import javax.swing.JTextField;
+import Other.LocalDataStorage;
 import Other.SaveToDb;
 import Persistent.Student;
 import javax.swing.JOptionPane;

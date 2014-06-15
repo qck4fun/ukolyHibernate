@@ -29,7 +29,7 @@ public class SubjectsPaneModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) throws ArrayIndexOutOfBoundsException {
         Subject subject = LocalDataStorage.subjectsList.get(rowIndex);
-        Object[] values = new Object[]{subject.getId(), subject.getName(), subject.getCredit()};
+        Object[] values = new Object[]{subject.getId(), subject.getName(), subject.getCredits()};
         return values[columnIndex];
     }
 

@@ -84,9 +84,7 @@ public class MainWindow extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     String studentXname = studentsTable.getModel().getValueAt(studentsTable.getSelectedRow(), 1).toString();
-                    System.out.println(studentXname);
                     Student student = LocalDataStorage.getStudentXname(studentXname);
-                    System.out.println(student.toString());
                     new StudentFrame(studentsPaneModel, student).setVisible(true);
                 } catch (ArrayIndexOutOfBoundsException er) {
                     JOptionPane.showMessageDialog(null, "Je třeba vybrat záznam, kterých chcete změnit", "Chyba", JOptionPane.ERROR_MESSAGE);

@@ -13,8 +13,8 @@
                           column="NAME" 
                           not-null="true">
 		</property>
-		<property name="topic" 
-                          column="TOPIC" 
+		<property name="description" 
+                          column="DESCRIPTION" 
                           not-null="true">
 		</property>
                 <many-to-one name="Subject">
