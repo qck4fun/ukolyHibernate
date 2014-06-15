@@ -31,9 +31,9 @@ public class TestDataInsert {
 
     private void createDummyData() {
         Student[] stud = {
-            new Student("Jarmila", "Pavlíčková"),
-            new Student("Pepa", "Novák"),
-            new Student("Luboš", "Pavlíček"),};
+            new Student("xpavj64", "Jarmila", "Pavlíčková"),
+            new Student("xnovp79", "Pepa", "Novák"),
+            new Student("xpavl62", "Luboš", "Pavlíček"),};
         students = Arrays.asList(stud);
         
         Subject[] sub = {

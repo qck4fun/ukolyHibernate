@@ -24,11 +24,11 @@ public class LocalDataStorage {
     }
 
     public static boolean addSubject(Subject subject) {
-        for (Subject savedSubject : subjectsList) {
+        //for (Subject savedSubject : subjectsList) {
             if (subjectsList.contains(subject)) {
                 return false;
             }
-        }
+        //}
         subjectsList.add(subject);
         return true;
     }
@@ -44,6 +44,33 @@ public class LocalDataStorage {
     public static Subject getSubjectName(String subjectName) {
         for (Subject s : subjectsList) {
             if (s.getName().equals(subjectName.toString())) {
+                return s;
+            }
+        }
+        return null;
+    }
+
+    public static boolean addStudent(Student student) {
+        //for (Student savedStudent : studentsList) {
+            if (subjectsList.contains(student)) {
+                return false;
+            }
+        //}
+        studentsList.add(student);
+        return true;
+    }
+
+    public static void changeStudent(Student student) {
+        if (studentsList.contains(student)) {
+            Student savedStudent = studentsList.get(studentsList.indexOf(student));
+            savedStudent.setFirstName(student.getFirstName());
+            savedStudent.setLastName(student.getLastName());
+        }
+    }
+
+    public static Student getStudentXname(String studentXname) {
+        for (Student s : studentsList) {
+            if (s.getXname().equals(studentXname.toString())) {
                 return s;
             }
         }

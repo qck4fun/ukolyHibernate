@@ -9,6 +9,10 @@
                     type="long">
 			<generator class="native"></generator>
 		</id>
+                <property name="xname" 
+                          column="XNAME" 
+                          not-null="true">
+		</property>
 		<property name="firstName" 
                           column="NAME" 
                           not-null="true">

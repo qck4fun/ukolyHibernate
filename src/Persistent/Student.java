@@ -18,6 +18,7 @@ public class Student {
     
     private Long id;
     
+    private String xname;
     private String firstName;
     private String lastName;
     
@@ -28,7 +29,8 @@ public class Student {
         super();
     }
     
-    public Student(String name, String lastName) {
+    public Student(String xname, String name, String lastName) {
+        this.xname = xname;
         this.firstName = name;
         this.lastName = lastName;
         
@@ -54,7 +56,7 @@ public class Student {
     
     @Override
     public String toString() {
-        return getFirstName() + " " + getLastName();
+        return getXname() + " " + getFirstName() + " " + getLastName();
     }
 
     @Override
@@ -73,15 +75,12 @@ public class Student {
             return false;
         }
         final Student other = (Student) obj;
-        if (!Objects.equals(this.firstName, other.firstName)) {
-            return false;
-        }
-        if (!Objects.equals(this.lastName, other.lastName)) {
+        if (!Objects.equals(this.xname, other.xname)) {
             return false;
         }
         return true;
     }
-    
+
     //GETTERS and SETTERS
     
     public Long getId() {
@@ -106,6 +105,14 @@ public class Student {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getXname() {
+        return xname;
+    }
+
+    public void setXname(String xname) {
+        this.xname = xname;
     }
 
     public Set<Task> getTasks() {

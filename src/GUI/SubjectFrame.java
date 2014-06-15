@@ -35,7 +35,7 @@ public class SubjectFrame extends javax.swing.JFrame {
         this.subject = subject;
         initComponents();
         setTitle("Upravit předmět");
-        //headline.setText(subject.getName());
+        headline.setText("Upravit předmět");
         name.setText(subject.getName());
         credits.setText(String.valueOf(subject.getCredit()));
         newSubject = false;
@@ -145,20 +145,18 @@ public class SubjectFrame extends javax.swing.JFrame {
                     name.setText("");
                     credits.setText("");
                     new Thread(new SaveToDb(subject)).start();
+                    cancelClick(evt);
                 } else {
                     errorMsg = "Takový předmět již v databázi existuje";
                     JOptionPane.showMessageDialog(this, errorMsg, "Chyba", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
-                try {
                     subject.setName(name.getText());
                     subject.setCredit(Integer.parseInt(credits.getText()));
                     LocalDataStorage.changeSubject(subject);
                     subjectsPaneModel.fireTableDataChanged();
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    errorMsg = "Musíte vybrat záznam, který chcete změnit";
-                    JOptionPane.showMessageDialog(this, errorMsg, "Chyba", JOptionPane.ERROR_MESSAGE);
-                }
+                    new Thread(new SaveToDb(subject)).start();
+                    cancelClick(evt);
             }
         } else {
             JOptionPane.showMessageDialog(this, errorMsg, "Chyba", JOptionPane.ERROR_MESSAGE);
@@ -199,24 +197,3 @@ public class SubjectFrame extends javax.swing.JFrame {
     private javax.swing.JButton saveSubject;
     // End of variables declaration//GEN-END:variables
 }
-//
-// private void saveSubject(java.awt.event.ActionEvent evt) {                             
-//        if (checkInputData()) {
-//            int existence = LocalDataStorage.subjectsList.lastIndexOf(subject);
-//            if (existence == -1) {
-//                subject = new Subject(name.getText(), Integer.parseInt(credits.getText()));
-//            }
-//            if (LocalDataStorage.addSubject(subject)) {
-//                subjectsPaneModel.fireTableDataChanged();
-//                name.setText("");
-//                credits.setText("");
-//                new Thread(new SaveToDb(subject)).start();
-//            } else {
-//                errorMsg = "Takový předmět již v databázi existuje";
-//                JOptionPane.showMessageDialog(this, errorMsg, "Chyba na vstupu", JOptionPane.ERROR_MESSAGE);
-//            }
-//        }
-//        else {
-//            JOptionPane.showMessageDialog(this, errorMsg, "Chyba na vstupu", JOptionPane.ERROR_MESSAGE);
-//        }
-//    }
