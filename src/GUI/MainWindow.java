@@ -134,9 +134,13 @@ public class MainWindow extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                try {
                 String subjectName = subjectsTable.getModel().getValueAt(subjectsTable.getSelectedRow(), 1).toString();
                 Subject subject = LocalDataStorage.getSubjectName(subjectName);
                 new SubjectFrame(subjectsPaneModel, subject).setVisible(true);
+                } catch(ArrayIndexOutOfBoundsException er) {
+                    JOptionPane.showMessageDialog(null, "Je třeba vybrat záznam, kterých chcete změnit", "Chyba", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
         

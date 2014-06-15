@@ -18,6 +18,7 @@ public class SubjectFrame extends javax.swing.JFrame {
     private final SubjectsPaneModel subjectsPaneModel;
     private Subject subject;
     private String errorMsg;
+    private boolean newSubject;
 
     /**
      * Creates new form SubjectFrame
@@ -26,6 +27,7 @@ public class SubjectFrame extends javax.swing.JFrame {
         this.subjectsPaneModel = subjectsPaneModel;
         initComponents();
         setTitle("Nový předmět");
+        newSubject = true;
     }
 
     public SubjectFrame(SubjectsPaneModel subjectsPaneModel, Subject subject) {
@@ -36,6 +38,7 @@ public class SubjectFrame extends javax.swing.JFrame {
         //headline.setText(subject.getName());
         name.setText(subject.getName());
         credits.setText(String.valueOf(subject.getCredit()));
+        newSubject = false;
     }
 
     /**
@@ -135,22 +138,30 @@ public class SubjectFrame extends javax.swing.JFrame {
 
     private void saveSubject(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveSubject
         if (checkInputData()) {
-            int existence = LocalDataStorage.subjectsList.lastIndexOf(subject);
-            if (existence == -1) {
+            if (newSubject) {
                 subject = new Subject(name.getText(), Integer.parseInt(credits.getText()));
-            }
-            if (LocalDataStorage.addSubject(subject)) {
-                subjectsPaneModel.fireTableDataChanged();
-                name.setText("");
-                credits.setText("");
-                new Thread(new SaveToDb(subject)).start();
+                if (LocalDataStorage.addSubject(subject)) {
+                    subjectsPaneModel.fireTableDataChanged();
+                    name.setText("");
+                    credits.setText("");
+                    new Thread(new SaveToDb(subject)).start();
+                } else {
+                    errorMsg = "Takový předmět již v databázi existuje";
+                    JOptionPane.showMessageDialog(this, errorMsg, "Chyba", JOptionPane.ERROR_MESSAGE);
+                }
             } else {
-                errorMsg = "Takový předmět již v databázi existuje";
-                JOptionPane.showMessageDialog(this, errorMsg, "Chyba na vstupu", JOptionPane.ERROR_MESSAGE);
+                try {
+                    subject.setName(name.getText());
+                    subject.setCredit(Integer.parseInt(credits.getText()));
+                    LocalDataStorage.changeSubject(subject);
+                    subjectsPaneModel.fireTableDataChanged();
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    errorMsg = "Musíte vybrat záznam, který chcete změnit";
+                    JOptionPane.showMessageDialog(this, errorMsg, "Chyba", JOptionPane.ERROR_MESSAGE);
+                }
             }
-        }
-        else {
-            JOptionPane.showMessageDialog(this, errorMsg, "Chyba na vstupu", JOptionPane.ERROR_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, errorMsg, "Chyba", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_saveSubject
 
@@ -188,3 +199,24 @@ public class SubjectFrame extends javax.swing.JFrame {
     private javax.swing.JButton saveSubject;
     // End of variables declaration//GEN-END:variables
 }
+//
+// private void saveSubject(java.awt.event.ActionEvent evt) {                             
+//        if (checkInputData()) {
+//            int existence = LocalDataStorage.subjectsList.lastIndexOf(subject);
+//            if (existence == -1) {
+//                subject = new Subject(name.getText(), Integer.parseInt(credits.getText()));
+//            }
+//            if (LocalDataStorage.addSubject(subject)) {
+//                subjectsPaneModel.fireTableDataChanged();
+//                name.setText("");
+//                credits.setText("");
+//                new Thread(new SaveToDb(subject)).start();
+//            } else {
+//                errorMsg = "Takový předmět již v databázi existuje";
+//                JOptionPane.showMessageDialog(this, errorMsg, "Chyba na vstupu", JOptionPane.ERROR_MESSAGE);
+//            }
+//        }
+//        else {
+//            JOptionPane.showMessageDialog(this, errorMsg, "Chyba na vstupu", JOptionPane.ERROR_MESSAGE);
+//        }
+//    }

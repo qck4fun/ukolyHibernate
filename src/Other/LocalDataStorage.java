@@ -32,10 +32,18 @@ public class LocalDataStorage {
         subjectsList.add(subject);
         return true;
     }
-    
+
+    public static void changeSubject(Subject subject) {
+        if (subjectsList.contains(subject)) {
+            Subject savedSubject = subjectsList.get(subjectsList.indexOf(subject));
+            savedSubject.setName(subject.getName());
+            savedSubject.setCredit(subject.getCredit());
+        }
+    }
+
     public static Subject getSubjectName(String subjectName) {
-        for(Subject s : subjectsList) {
-            if(s.getName().equals(subjectName.toString())) {
+        for (Subject s : subjectsList) {
+            if (s.getName().equals(subjectName.toString())) {
                 return s;
             }
         }
