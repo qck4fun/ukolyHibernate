@@ -176,7 +176,8 @@ public class TaskFrame extends javax.swing.JFrame {
                     cancelTask(evt);
                 }
                 else {
-                    
+                    errorMsg = "Takový úkol již v databázi existuje";
+                    JOptionPane.showMessageDialog(this, errorMsg, "Chyba", JOptionPane.ERROR_MESSAGE);
                 }
             }
             else {
