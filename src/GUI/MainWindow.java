@@ -42,7 +42,7 @@ public class MainWindow extends JFrame {
 
     private void init() {
         setTitle("Hibernate task application");
-        setSize(600, 400);
+        setSize(1000, 400);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

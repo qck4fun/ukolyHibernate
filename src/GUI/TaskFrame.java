@@ -18,16 +18,15 @@ import javax.swing.JOptionPane;
  * @author adam
  */
 public class TaskFrame extends javax.swing.JFrame {
-    
-    private DefaultComboBoxModel<String> studentsModel;
-    private DefaultComboBoxModel<String> subjectsModel;
+
+    private DefaultComboBoxModel<Student> studentsModel;
+    private DefaultComboBoxModel<Subject> subjectsModel;
     private final TasksPaneModel tasksPaneModel;
     private Task task;
     private String errorMsg;
     private boolean newTask;
     private String studentComboInput;
     private String subjectComboInput;
-    
 
     /**
      * Creates new form TaskFrame
@@ -40,7 +39,7 @@ public class TaskFrame extends javax.swing.JFrame {
         setTitle("Nový úkol");
         newTask = true;
     }
-    
+
     public TaskFrame(TasksPaneModel tasksPaneModel, Task task) {
         this.tasksPaneModel = tasksPaneModel;
         this.task = task;
@@ -50,34 +49,23 @@ public class TaskFrame extends javax.swing.JFrame {
         headline.setText("Upravit úkol");
         name.setText(task.getName().toString());
         description.setText(task.getDescription().toString());
-        
-        for(int i = 0; i < studentsModel.getSize(); i++) {
-            String studentXname = studentsModel.getElementAt(i).toString();
-            System.out.println(studentXname);
-            String firstSplit[] =  studentXname.split("\\(");
-            System.out.println(Arrays.toString(firstSplit));
-            System.out.println(firstSplit[0].toString());
-            String secondSplit[] = firstSplit[0].split("\\)");
-            //System.out.println(firstSplit[1].toString());
-            //String secondSplit[] = firstSplit[0].split("\\)");
-            //System.out.println(Arrays.toString(secondSplit));
-            
-            
-            
-//            if(studentXname.equals(task.getStudent().getXname())) {
-//                studentsModel.setSelectedItem(studentsModel.getElementAt(i));
-//                break;
-//            }
+
+        for (int i = 0; i < studentsModel.getSize(); i++) {
+            String studentXname = studentsModel.getElementAt(i).getXname();
+            if (studentXname.equals(task.getStudent().getXname())) {
+                studentsModel.setSelectedItem(studentsModel.getElementAt(i));
+                break;
+            }
         }
-        
-        for(int i = 0; i < subjectsModel.getSize(); i++) {
+
+        for (int i = 0; i < subjectsModel.getSize(); i++) {
             String subjectName = subjectsModel.getElementAt(i).toString();
-            if(subjectName.equals(task.getSubject().getName())) {
+            if (subjectName.equals(task.getSubject().getName())) {
                 subjectsModel.setSelectedItem(subjectsModel.getElementAt(i));
                 break;
             }
         }
-        
+
         setTitle("Upravit úkol");
         newTask = false;
     }
@@ -202,28 +190,32 @@ public class TaskFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void saveTask(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveTask
-        if(checkInputData()) {
-            if(newTask) {
+        if (checkInputData()) {
+            if (newTask) {
                 Student student = LocalDataStorage.getTaskUsingXname(splitStudentXname(studentComboInput)).getStudent();
                 Subject subject = LocalDataStorage.getTaskUsingSubject(subjectComboInput.toString()).getSubject();
                 task = new Task(name.getText(), description.getText(), subject, student);
-                if(LocalDataStorage.addTask(task)) {
+                if (LocalDataStorage.addTask(task)) {
                     tasksPaneModel.fireTableDataChanged();
                     name.setText("");
                     description.setText("");
                     new Thread(new SaveToDb(task)).start();
                     cancelTask(evt);
-                }
-                else {
+                } else {
                     errorMsg = "Takový úkol již v databázi existuje";
                     JOptionPane.showMessageDialog(this, errorMsg, "Chyba", JOptionPane.ERROR_MESSAGE);
                 }
+            } else {
+                task.setName(name.getText());
+                task.setDescription(description.getText());
+                task.setStudent((Student)studentsModel.getSelectedItem());
+                task.setSubject((Subject)subjectsModel.getSelectedItem());
+                LocalDataStorage.changeTask(task);
+                tasksPaneModel.fireTableDataChanged();
+                new Thread(new SaveToDb(task)).start();
+                cancelTask(evt);
             }
-            else {
-                
-            }
-        }
-        else {
+        } else {
             JOptionPane.showMessageDialog(this, errorMsg, "Chyba", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_saveTask
@@ -233,54 +225,50 @@ public class TaskFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_cancelTask
 
     private DefaultComboBoxModel getStudentsModel() {
-        studentsModel = new DefaultComboBoxModel<String>();
-        studentsModel.addElement("");
-        for(Student student : LocalDataStorage.studentsList) {
-            studentsModel.addElement(student.toString() + " (" + student.getXname() + ")");
+        studentsModel = new DefaultComboBoxModel<Student>();
+        //studentsModel.addElement(""); //TODO nechat tady?
+        for (Student student : LocalDataStorage.studentsList) {
+            studentsModel.addElement(student);
         }
         return studentsModel;
     }
-    
+
     private DefaultComboBoxModel getSubjectsModel() {
-        subjectsModel = new DefaultComboBoxModel<String>();
-        subjectsModel.addElement("");
-        for(Subject subject : LocalDataStorage.subjectsList) {
-            subjectsModel.addElement(subject.toString());
+        subjectsModel = new DefaultComboBoxModel<Subject>();
+        //subjectsModel.addElement(""); //TODO nechat tady?
+        for (Subject subject : LocalDataStorage.subjectsList) {
+            subjectsModel.addElement(subject);
         }
         return subjectsModel;
     }
-    
+
     private boolean checkInputData() {
         String nameInput = name.getText();
         String descriptionInput = description.getText();
         studentComboInput = studentsModel.getSelectedItem().toString();
         subjectComboInput = subjectsModel.getSelectedItem().toString();
-        
-        if(nameInput.isEmpty()) {
+
+        if (nameInput.isEmpty()) {
             errorMsg = "Úkol musí mít název";
             return false;
-        }
-        else if(descriptionInput.isEmpty()) {
+        } else if (descriptionInput.isEmpty()) {
             errorMsg = "Každý úkol musí mít svůj popis";
             return false;
-        }
-        else if(studentComboInput.isEmpty()) {
+        } else if (studentComboInput.isEmpty()) {
             errorMsg = "Každý úkol musí mít přiřazeného studenta, který ho vypracuje";
             return false;
-        }
-        else if(subjectComboInput.isEmpty()) {
+        } else if (subjectComboInput.isEmpty()) {
             errorMsg = "Každý úkol musí mít přiřazený předmět, které se ho týká";
             return false;
         }
         return true;
     }
-    
+
     private String splitStudentXname(String studentXname) {
-        String firstSplit[] =  studentXname.split("\\(");
+        String firstSplit[] = studentXname.split("\\(");
         String secondSplit[] = firstSplit[1].split("\\)");
         return secondSplit[0];
     }
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelTask;
     private javax.swing.JTextField description;
