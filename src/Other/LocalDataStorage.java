@@ -43,7 +43,7 @@ public class LocalDataStorage {
 
     public static Subject getSubjectName(String subjectName) {
         for (Subject s : subjectsList) {
-            if (s.getName().equals(subjectName.toString())) {
+            if (s.getName().equals(subjectName)) {
                 return s;
             }
         }
@@ -70,7 +70,7 @@ public class LocalDataStorage {
 
     public static Student getStudentXname(String studentXname) {
         for (Student s : studentsList) {
-            if (s.getXname().equals(studentXname.toString())) {
+            if (s.getXname().equals(studentXname)) {
                 return s;
             }
         }
@@ -85,7 +85,24 @@ public class LocalDataStorage {
         return true;
     }
     
+    public static void changeTask(Task task) {
+        if(tasksList.contains(task)) {
+            Task savedTask = tasksList.get(tasksList.indexOf(task));
+            savedTask.setName(task.getName());
+            savedTask.setDescription(task.getDescription());
+            savedTask.setSubject(task.getSubject());
+            savedTask.setStudent(task.getStudent());
+        }
+    }
     
+    public static Task getTaskName(String taskName) {
+        for(Task t : tasksList) {
+            if(t.getName().equals(taskName)) {
+                return t;
+            }
+        }
+        return null;
+    }
     
     public static Task getTaskUsingXname(String xname) {
         for(Task t : tasksList) {

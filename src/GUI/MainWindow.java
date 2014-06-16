@@ -8,6 +8,7 @@ package GUI;
 import Other.LocalDataStorage;
 import Persistent.Student;
 import Persistent.Subject;
+import Persistent.Task;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
@@ -185,7 +186,14 @@ public class MainWindow extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                throw new UnsupportedOperationException("Not supported yet.");
+                try {
+                    String taskName = tasksTable.getModel().getValueAt(tasksTable.getSelectedRow(), 1).toString();
+                    Task task = LocalDataStorage.getTaskName(taskName);
+                    new TaskFrame(tasksPaneModel, task).setVisible(true);
+                } catch (ArrayIndexOutOfBoundsException er) {
+                    JOptionPane.showMessageDialog(null, "Je třeba vybrat záznam, kterých chcete změnit", "Chyba", JOptionPane.ERROR_MESSAGE);
+                    er.printStackTrace();
+                }
             }
         });
 

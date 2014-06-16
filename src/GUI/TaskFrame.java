@@ -40,6 +40,47 @@ public class TaskFrame extends javax.swing.JFrame {
         setTitle("Nový úkol");
         newTask = true;
     }
+    
+    public TaskFrame(TasksPaneModel tasksPaneModel, Task task) {
+        this.tasksPaneModel = tasksPaneModel;
+        this.task = task;
+        getStudentsModel();
+        getSubjectsModel();
+        initComponents();
+        headline.setText("Upravit úkol");
+        name.setText(task.getName().toString());
+        description.setText(task.getDescription().toString());
+        
+        for(int i = 0; i < studentsModel.getSize(); i++) {
+            String studentXname = studentsModel.getElementAt(i).toString();
+            System.out.println(studentXname);
+            String firstSplit[] =  studentXname.split("\\(");
+            System.out.println(Arrays.toString(firstSplit));
+            System.out.println(firstSplit[0].toString());
+            String secondSplit[] = firstSplit[0].split("\\)");
+            //System.out.println(firstSplit[1].toString());
+            //String secondSplit[] = firstSplit[0].split("\\)");
+            //System.out.println(Arrays.toString(secondSplit));
+            
+            
+            
+//            if(studentXname.equals(task.getStudent().getXname())) {
+//                studentsModel.setSelectedItem(studentsModel.getElementAt(i));
+//                break;
+//            }
+        }
+        
+        for(int i = 0; i < subjectsModel.getSize(); i++) {
+            String subjectName = subjectsModel.getElementAt(i).toString();
+            if(subjectName.equals(task.getSubject().getName())) {
+                subjectsModel.setSelectedItem(subjectsModel.getElementAt(i));
+                break;
+            }
+        }
+        
+        setTitle("Upravit úkol");
+        newTask = false;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -56,7 +97,7 @@ public class TaskFrame extends javax.swing.JFrame {
         description = new javax.swing.JTextField();
         saveTask = new javax.swing.JButton();
         cancelTask = new javax.swing.JButton();
-        headline1 = new javax.swing.JLabel();
+        headline = new javax.swing.JLabel();
         studentComboBox = new javax.swing.JComboBox();
         studentComboLabel = new javax.swing.JLabel();
         subjectComboBox = new javax.swing.JComboBox();
@@ -82,9 +123,9 @@ public class TaskFrame extends javax.swing.JFrame {
             }
         });
 
-        headline1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        headline1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        headline1.setText("Nový úkol");
+        headline.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        headline.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        headline.setText("Nový úkol");
 
         studentComboBox.setModel(studentsModel);
 
@@ -123,7 +164,7 @@ public class TaskFrame extends javax.swing.JFrame {
                                     .addComponent(name)))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(111, 111, 111)
-                        .addComponent(headline1)
+                        .addComponent(headline)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -131,7 +172,7 @@ public class TaskFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(headline1)
+                .addComponent(headline)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -163,9 +204,7 @@ public class TaskFrame extends javax.swing.JFrame {
     private void saveTask(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveTask
         if(checkInputData()) {
             if(newTask) {
-                String firstSplit[] =  studentComboInput.split("\\(");
-                String secondSplit[] = firstSplit[1].split("\\)"); 
-                Student student =  LocalDataStorage.getTaskUsingXname(secondSplit[0]).getStudent();
+                Student student = LocalDataStorage.getTaskUsingXname(splitStudentXname(studentComboInput)).getStudent();
                 Subject subject = LocalDataStorage.getTaskUsingSubject(subjectComboInput.toString()).getSubject();
                 task = new Task(name.getText(), description.getText(), subject, student);
                 if(LocalDataStorage.addTask(task)) {
@@ -236,11 +275,17 @@ public class TaskFrame extends javax.swing.JFrame {
         return true;
     }
     
+    private String splitStudentXname(String studentXname) {
+        String firstSplit[] =  studentXname.split("\\(");
+        String secondSplit[] = firstSplit[1].split("\\)");
+        return secondSplit[0];
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelTask;
     private javax.swing.JTextField description;
     private javax.swing.JLabel descriptionLabel;
-    private javax.swing.JLabel headline1;
+    private javax.swing.JLabel headline;
     private javax.swing.JTextField name;
     private javax.swing.JLabel nameLabel;
     private javax.swing.JButton saveTask;
