@@ -48,6 +48,9 @@ public class SaveToDb implements Runnable {
             session.getTransaction().commit();
         }
         else if(task != null) {
+            session.saveOrUpdate(task);
+            session.flush();
+            session.getTransaction().commit();
         }
         session.close();
     }

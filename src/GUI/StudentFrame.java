@@ -192,6 +192,7 @@ public class StudentFrame extends javax.swing.JFrame {
         if(xnameInput.isEmpty()) {
             errorMsg = "Je třeba zadat xname studenta";
             return false;
+            //TODO vyřešit další omezení pro xname - regex??
         }        
         else if (firstNameInput.isEmpty()) {
             errorMsg = "Je třeba zadat jméno studenta";

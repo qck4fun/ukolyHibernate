@@ -76,4 +76,32 @@ public class LocalDataStorage {
         }
         return null;
     }
+    
+    public static boolean addTask(Task task) {
+        if(tasksList.contains(task)) {
+            return false;
+        }
+        tasksList.add(task);
+        return true;
+    }
+    
+    
+    
+    public static Task getTaskUsingXname(String xname) {
+        for(Task t : tasksList) {
+            if(t.getStudent().getXname().equals(xname)) {
+                return t;
+            }
+        }
+        return null;
+    }
+    
+    public static Task getTaskUsingSubject(String subject) {
+        for(Task t : tasksList) {
+            if(t.getSubject().getName().equals(subject)) {
+                return t;
+            }
+        }
+        return null;
+    }
 }

@@ -176,7 +176,7 @@ public class MainWindow extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                throw new UnsupportedOperationException("Not supported yet.");
+                new TaskFrame(tasksPaneModel).setVisible(true);
             }
         });
 
