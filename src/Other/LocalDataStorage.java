@@ -8,6 +8,7 @@ import Persistent.Student;
 import Persistent.Subject;
 import Persistent.Task;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -25,9 +26,9 @@ public class LocalDataStorage {
 
     public static boolean addSubject(Subject subject) {
         //for (Subject savedSubject : subjectsList) { //TODO odstranit
-            if (subjectsList.contains(subject)) {
-                return false;
-            }
+        if (subjectsList.contains(subject)) {
+            return false;
+        }
         //}
         subjectsList.add(subject);
         return true;
@@ -52,9 +53,9 @@ public class LocalDataStorage {
 
     public static boolean addStudent(Student student) {
         //for (Student savedStudent : studentsList) { //TODO odstranit
-            if (studentsList.contains(student)) {
-                return false;
-            }
+        if (studentsList.contains(student)) {
+            return false;
+        }
         //}
         studentsList.add(student);
         return true;
@@ -76,17 +77,17 @@ public class LocalDataStorage {
         }
         return null;
     }
-    
+
     public static boolean addTask(Task task) {
-        if(tasksList.contains(task)) {
+        if (tasksList.contains(task)) {
             return false;
         }
         tasksList.add(task);
         return true;
     }
-    
+
     public static void changeTask(Task task) {
-        if(tasksList.contains(task)) {
+        if (tasksList.contains(task)) {
             Task savedTask = tasksList.get(tasksList.indexOf(task));
             savedTask.setName(task.getName());
             savedTask.setDescription(task.getDescription());
@@ -94,31 +95,72 @@ public class LocalDataStorage {
             savedTask.setStudent(task.getStudent());
         }
     }
-    
+
     public static Task getTaskName(String taskName) {
-        for(Task t : tasksList) {
-            if(t.getName().equals(taskName)) {
+        for (Task t : tasksList) {
+            if (t.getName().equals(taskName)) {
                 return t;
             }
         }
         return null;
     }
-    
+
     public static Task getTaskUsingXname(String xname) {
-        for(Task t : tasksList) {
-            if(t.getStudent().getXname().equals(xname)) {
+        for (Task t : tasksList) {
+            if (t.getStudent().getXname().equals(xname)) {
                 return t;
             }
         }
         return null;
     }
-    
+
     public static Task getTaskUsingSubject(String subject) {
-        for(Task t : tasksList) {
-            if(t.getSubject().getName().equals(subject)) {
+        for (Task t : tasksList) {
+            if (t.getSubject().getName().equals(subject)) {
                 return t;
             }
         }
         return null;
+    }
+
+    public static void removeTask(Task task) {
+        for (Task t : tasksList) {
+            if (t.equals(task)) {
+                tasksList.remove(task);
+                break;
+            }
+        }
+    }
+
+    public static boolean removeSubject(Subject subject) {
+        for (Task t : tasksList) {
+            if(t.getSubject().equals(subject)) {
+                System.out.println(t.getSubject().getName());
+                System.out.println(subject.getName());
+                return false;
+            }
+            else {
+                System.out.println(t.getSubject().getName());
+                System.out.println(subject.getName());
+                return true;                
+            }
+        }
+        return false;
+    }
+
+    public static boolean removeStudent(Student student) {
+        for (Student s : studentsList) {
+            if (s.equals(student)) {
+                for (Task t : tasksList) {
+                    if (t.getStudent().equals(student)) {
+                        return false;
+                    } else {
+                        studentsList.remove(student);
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }

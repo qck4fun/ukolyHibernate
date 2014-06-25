@@ -98,7 +98,19 @@ public class MainWindow extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                throw new UnsupportedOperationException("Not supported yet.");
+                try {
+                    String studentXname = studentsTable.getModel().getValueAt(studentsTable.getSelectedRow(), 1).toString();
+                    Student student = LocalDataStorage.getStudentXname(studentXname);
+                    if(LocalDataStorage.removeStudent(student)) {
+                        LocalDataStorage.removeStudent(student);
+                        studentsPaneModel.fireTableStructureChanged();
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(null, "Student nejde smazat. Zřejmě je přiřazen k nějakému úkolu.", "Chyba", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (ArrayIndexOutOfBoundsException er) {
+                    JOptionPane.showMessageDialog(null, "Je třeba vybrat záznam, kterých chcete změnit", "Chyba", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
 
@@ -150,7 +162,20 @@ public class MainWindow extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                throw new UnsupportedOperationException("Not supported yet.");
+                try {
+                    String subjectName = subjectsTable.getModel().getValueAt(subjectsTable.getSelectedRow(), 1).toString();
+                    Subject subject = LocalDataStorage.getSubjectName(subjectName);
+                    //System.out.println(subject.getName());
+                    if(LocalDataStorage.removeSubject(subject)) {
+                        LocalDataStorage.removeSubject(subject);
+                        subjectsPaneModel.fireTableStructureChanged();
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(null, "Předmět nejde smazat. Zřejmě je přiřazen k nějakému úkolu.", "Chyba", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (ArrayIndexOutOfBoundsException er) {
+                    JOptionPane.showMessageDialog(null, "Je třeba vybrat záznam, kterých chcete smazat", "Chyba", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
 
@@ -192,7 +217,6 @@ public class MainWindow extends JFrame {
                     new TaskFrame(tasksPaneModel, task).setVisible(true);
                 } catch (ArrayIndexOutOfBoundsException er) {
                     JOptionPane.showMessageDialog(null, "Je třeba vybrat záznam, kterých chcete změnit", "Chyba", JOptionPane.ERROR_MESSAGE);
-                    er.printStackTrace();
                 }
             }
         });
@@ -202,7 +226,14 @@ public class MainWindow extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                throw new UnsupportedOperationException("Not supported yet.");
+                try {
+                    String taskName = tasksTable.getModel().getValueAt(tasksTable.getSelectedRow(), 1).toString();
+                    Task task = LocalDataStorage.getTaskName(taskName);
+                    LocalDataStorage.removeTask(task);
+                    tasksPaneModel.fireTableStructureChanged();
+                } catch (ArrayIndexOutOfBoundsException er) {
+                    JOptionPane.showMessageDialog(null, "Je třeba vybrat záznam, kterých chcete smazat", "Chyba", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
 
