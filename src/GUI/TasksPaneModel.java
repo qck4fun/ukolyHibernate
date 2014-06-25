@@ -14,7 +14,7 @@ import javax.swing.table.AbstractTableModel;
  */
 public class TasksPaneModel extends AbstractTableModel {
     
-    public static final String[] columnName =  {"ID úkolu", "Název úkolu", "Popis", "Student", "Předmět"};
+    public static final String[] columnName =  {"Název úkolu", "Popis", "Student", "Předmět"};
 
     @Override
     public int getRowCount() {
@@ -23,13 +23,13 @@ public class TasksPaneModel extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return 5;
+        return 4;
     }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         Task task = LocalDataStorage.tasksList.get(rowIndex);
-        Object[] values = {task.getId(), task.getName(), task.getDescription(), task.getStudent(), task.getSubject()};
+        Object[] values = {task.getName(), task.getDescription(), task.getStudent(), task.getSubject()};
         return values[columnIndex];
     }
     

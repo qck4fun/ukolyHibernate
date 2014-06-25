@@ -9,7 +9,8 @@ import Other.SaveToDb;
 import Persistent.Student;
 import Persistent.Subject;
 import Persistent.Task;
-import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
@@ -191,25 +192,30 @@ public class TaskFrame extends javax.swing.JFrame {
 
     private void saveTask(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveTask
         if (checkInputData()) {
-            Student student = LocalDataStorage.getTaskUsingXname(splitStudentXname(studentComboInput)).getStudent();
-            Subject subject = LocalDataStorage.getTaskUsingSubject(subjectComboInput.toString()).getSubject();
-            task = new Task(name.getText(), description.getText(), subject, student);
+            Student student = LocalDataStorage.getStudentUsingXname(splitStudentXname(studentComboInput));
+            Subject subject = LocalDataStorage.getSubjectUsingSubjectName(subjectComboInput.toString());
             if (newTask) {
+                task = new Task(name.getText(), description.getText(), subject, student);
                 if (LocalDataStorage.addTask(task)) {
                     student.addSubject(subject);
                     student.addTask(task);
                     subject.addTask(task);
-                    tasksPaneModel.fireTableDataChanged();
                     name.setText("");
                     description.setText("");
-                    new Thread(new SaveToDb(task)).start();
+                    Thread t1 = new Thread(new SaveToDb(task));
+                    t1.start();
+                    try {
+                        t1.join();
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(TaskFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    tasksPaneModel.fireTableDataChanged();
                     cancelTask(evt);
                 } else {
                     errorMsg = "Takový úkol již v databázi existuje";
                     JOptionPane.showMessageDialog(this, errorMsg, "Chyba", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
-                
                 student.addSubject(subject);
                 student.addTask(task);
                 subject.addTask(task);
@@ -218,8 +224,14 @@ public class TaskFrame extends javax.swing.JFrame {
                 task.setStudent((Student) studentsModel.getSelectedItem());
                 task.setSubject((Subject) subjectsModel.getSelectedItem());
                 LocalDataStorage.changeTask(task);
+                Thread t1 = new Thread(new SaveToDb(task));
+                t1.start();
+                try {
+                    t1.join();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(TaskFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 tasksPaneModel.fireTableDataChanged();
-                new Thread(new SaveToDb(task)).start();
                 cancelTask(evt);
             }
         } else {
@@ -253,7 +265,7 @@ public class TaskFrame extends javax.swing.JFrame {
         String nameInput = name.getText();
         String descriptionInput = description.getText();
         studentComboInput = studentsModel.getSelectedItem().toString();
-        subjectComboInput = subjectsModel.getSelectedItem().toString();
+        subjectComboInput = subjectsModel.getSelectedItem().toString(); //TODO nullpointer!!!
 
         if (nameInput.isEmpty()) {
             errorMsg = "Úkol musí mít název";

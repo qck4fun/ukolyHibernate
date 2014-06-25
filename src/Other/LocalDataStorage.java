@@ -8,7 +8,6 @@ import Persistent.Student;
 import Persistent.Subject;
 import Persistent.Task;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -25,11 +24,9 @@ public class LocalDataStorage {
     }
 
     public static boolean addSubject(Subject subject) {
-        //for (Subject savedSubject : subjectsList) { //TODO odstranit
         if (subjectsList.contains(subject)) {
             return false;
         }
-        //}
         subjectsList.add(subject);
         return true;
     }
@@ -52,11 +49,9 @@ public class LocalDataStorage {
     }
 
     public static boolean addStudent(Student student) {
-        //for (Student savedStudent : studentsList) { //TODO odstranit
         if (studentsList.contains(student)) {
             return false;
         }
-        //}
         studentsList.add(student);
         return true;
     }
@@ -105,10 +100,19 @@ public class LocalDataStorage {
         return null;
     }
 
-    public static Task getTaskUsingXname(String xname) {
-        for (Task t : tasksList) {
-            if (t.getStudent().getXname().equals(xname)) {
-                return t;
+    public static Student getStudentUsingXname(String xname) {
+        for (Student s : studentsList) {
+            if (s.getXname().equals(xname)) {
+                return s;
+            }
+        }
+        return null;
+    }
+
+    public static Subject getSubjectUsingSubjectName(String subjectName) {
+        for (Subject s : subjectsList) {
+            if (s.getName().equals(subjectName)) {
+                return s;
             }
         }
         return null;
@@ -124,11 +128,12 @@ public class LocalDataStorage {
     }
 
     public static boolean removeTask(Task task) {
+        System.out.println(task.getStudent().getSubjects().size());
         for (Task t : tasksList) {
             if (t.equals(task)) {
                 task.getStudent().getTasks().remove(task);
                 task.getSubject().getTasks().remove(task);
-                task.getStudent().removeSubject(task.getSubject());
+                    task.getStudent().removeSubject(task.getSubject());
                 tasksList.remove(task);
                 return true;
             }
@@ -139,11 +144,8 @@ public class LocalDataStorage {
     public static boolean removeSubject(Subject subject) {
         if (subject.getTasks().isEmpty()) {
             for (Student s : studentsList) {
-                if(s.removeSubject(subject)) {
-                    s.removeSubject(subject);
-                    subjectsList.remove(subject);
-                    return true;
-                }
+                subjectsList.remove(subject);
+                return true;
             }
         } else {
             return false;

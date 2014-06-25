@@ -13,6 +13,8 @@ import Persistent.Subject;
 import Persistent.Task;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 /**
@@ -86,7 +88,7 @@ public class MainWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    String studentXname = studentsTable.getModel().getValueAt(studentsTable.getSelectedRow(), 1).toString();
+                    String studentXname = studentsTable.getModel().getValueAt(studentsTable.getSelectedRow(), 0).toString();
                     Student student = LocalDataStorage.getStudentXname(studentXname);
                     new StudentFrame(studentsPaneModel, student).setVisible(true);
                 } catch (ArrayIndexOutOfBoundsException er) {
@@ -101,12 +103,18 @@ public class MainWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    String studentXname = studentsTable.getModel().getValueAt(studentsTable.getSelectedRow(), 1).toString();
+                    String studentXname = studentsTable.getModel().getValueAt(studentsTable.getSelectedRow(), 0).toString();
                     Student student = LocalDataStorage.getStudentXname(studentXname);
                     if(LocalDataStorage.removeStudent(student)) {
                         LocalDataStorage.removeStudent(student);
+                        Thread t1 = new Thread(new DeleteFromDb(student));
+                        t1.start();
+                        try {
+                            t1.join();
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                         studentsPaneModel.fireTableStructureChanged();
-                        new Thread(new DeleteFromDb(student)).start();
                     }
                     else {
                         JOptionPane.showMessageDialog(null, "Student nejde smazat, protože by byla narušena integrita databáze.", "Chyba", JOptionPane.ERROR_MESSAGE);
@@ -151,7 +159,7 @@ public class MainWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    String subjectName = subjectsTable.getModel().getValueAt(subjectsTable.getSelectedRow(), 1).toString();
+                    String subjectName = subjectsTable.getModel().getValueAt(subjectsTable.getSelectedRow(), 0).toString();
                     Subject subject = LocalDataStorage.getSubjectName(subjectName);
                     new SubjectFrame(subjectsPaneModel, subject).setVisible(true);
                 } catch (ArrayIndexOutOfBoundsException er) {
@@ -166,12 +174,18 @@ public class MainWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    String subjectName = subjectsTable.getModel().getValueAt(subjectsTable.getSelectedRow(), 1).toString();
+                    String subjectName = subjectsTable.getModel().getValueAt(subjectsTable.getSelectedRow(), 0).toString();
                     Subject subject = LocalDataStorage.getSubjectName(subjectName);
                     if(LocalDataStorage.removeSubject(subject)) {
                         LocalDataStorage.removeSubject(subject);
+                        Thread t1 = new Thread(new DeleteFromDb(subject));
+                        t1.start();
+                        try {
+                            t1.join();
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                         subjectsPaneModel.fireTableStructureChanged();
-                        new Thread(new DeleteFromDb(subject)).start();
                     }
                     else {
                         JOptionPane.showMessageDialog(null, "Předmět nejde smazat, protože by byla narušena integrita databáze.", "Chyba", JOptionPane.ERROR_MESSAGE);
@@ -215,7 +229,7 @@ public class MainWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    String taskName = tasksTable.getModel().getValueAt(tasksTable.getSelectedRow(), 1).toString();
+                    String taskName = tasksTable.getModel().getValueAt(tasksTable.getSelectedRow(), 0).toString();
                     Task task = LocalDataStorage.getTaskName(taskName);
                     new TaskFrame(tasksPaneModel, task).setVisible(true);
                 } catch (ArrayIndexOutOfBoundsException er) {
@@ -230,12 +244,19 @@ public class MainWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    String taskName = tasksTable.getModel().getValueAt(tasksTable.getSelectedRow(), 1).toString();
+                    String taskName = tasksTable.getModel().getValueAt(tasksTable.getSelectedRow(), 0).toString();
                     Task task = LocalDataStorage.getTaskName(taskName);                               
                     if(LocalDataStorage.removeTask(task)) {
-                        LocalDataStorage.removeTask(task);
+                        //LocalDataStorage.removeTask(task);
+                        Thread t1 = new Thread(new DeleteFromDb(task));
+                        t1.start();
+                        try {
+                            t1.join();
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+                            //TODO odchytit
+                        }
                         tasksPaneModel.fireTableStructureChanged();
-                        new Thread(new DeleteFromDb(task)).start();
                     }
                     else { // TODO to tu být nemá!
                         JOptionPane.showMessageDialog(null, "Úkol nejde smazat, protože by byla narušena integrita databáze.", "Chyba", JOptionPane.ERROR_MESSAGE);

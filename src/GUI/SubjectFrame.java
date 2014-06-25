@@ -8,6 +8,8 @@ import Other.LocalDataStorage;
 import Other.SaveToDb;
 import Persistent.Subject;
 import Persistent.Task;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
@@ -48,7 +50,10 @@ public class SubjectFrame extends javax.swing.JFrame {
         name.setText(subject.getName());
         credits.setText(String.valueOf(subject.getCredits()));
         newSubject = false;
-
+        repaintTasksList();
+    }
+    
+    private void repaintTasksList() {
         for (Task t : subject.getTasks()) {
             defaultTasksListModel.addElement(t);
         }
@@ -169,10 +174,16 @@ public class SubjectFrame extends javax.swing.JFrame {
             if (newSubject) {
                 subject = new Subject(name.getText(), Integer.parseInt(credits.getText()));
                 if (LocalDataStorage.addSubject(subject)) {
-                    subjectsPaneModel.fireTableDataChanged();
                     name.setText("");
                     credits.setText("");
-                    new Thread(new SaveToDb(subject)).start();
+                    Thread t1 = new Thread(new SaveToDb(subject));
+                    t1.start();
+                    try {
+                        t1.join();
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(SubjectFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    subjectsPaneModel.fireTableDataChanged();
                     cancelClick(evt);
                 } else {
                     errorMsg = "Takový předmět již v databázi existuje";
@@ -182,8 +193,14 @@ public class SubjectFrame extends javax.swing.JFrame {
                 subject.setName(name.getText());
                 subject.setCredits(Integer.parseInt(credits.getText()));
                 LocalDataStorage.changeSubject(subject);
+                Thread t1 = new Thread(new SaveToDb(subject));
+                t1.start();
+                try {
+                    t1.join();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(SubjectFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 subjectsPaneModel.fireTableDataChanged();
-                new Thread(new SaveToDb(subject)).start();
                 cancelClick(evt);
             }
         } else {

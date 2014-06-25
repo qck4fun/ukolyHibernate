@@ -4,16 +4,18 @@
  */
 package GUI;
 
-import Other.LocalDataStorage; 
-import java.awt.event.ActionEvent; 
-import javax.swing.JButton; 
-import javax.swing.JFrame; 
-import javax.swing.JLabel; 
+import Other.LocalDataStorage;
+import java.awt.event.ActionEvent;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JTextField;
 import Other.SaveToDb;
 import Persistent.Student;
 import Persistent.Subject;
 import Persistent.Task;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
@@ -39,7 +41,7 @@ public class StudentFrame extends javax.swing.JFrame {
         setTitle("Nový student");
         newStudent = true;
     }
-    
+
     public StudentFrame(StudentsPaneModel studentsPaneModel, Student student) {
         this.studentsPaneModel = studentsPaneModel;
         this.student = student;
@@ -50,11 +52,17 @@ public class StudentFrame extends javax.swing.JFrame {
         firstName.setText(student.getFirstName());
         lastName.setText(student.getLastName());
         newStudent = false;
-        
+        repaintSubjectsList();
+        repaintTasksList();
+    }
+
+    private void repaintSubjectsList() {
         for (Subject subject : student.getSubjects()) {
             defaultSubjectsListModel.addElement(subject);
         }
-        
+    }
+
+    private void repaintTasksList() {
         for (Task task : student.getTasks()) {
             defaultTasksListModel.addElement(task);
         }
@@ -200,24 +208,35 @@ public class StudentFrame extends javax.swing.JFrame {
             if (newStudent) {
                 student = new Student(xname.getText(), firstName.getText(), lastName.getText());
                 if (LocalDataStorage.addStudent(student)) {
-                    studentsPaneModel.fireTableDataChanged();
                     xname.setText("");
                     firstName.setText("");
                     lastName.setText("");
-                    new Thread(new SaveToDb(student)).start();
+                    Thread t1 = new Thread(new SaveToDb(student));
+                    t1.start();
+                    try {
+                        t1.join();
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(StudentFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    studentsPaneModel.fireTableDataChanged();
                     cancelStudent(evt);
                 } else {
                     errorMsg = "Takový student již v databázi existuje";
                     JOptionPane.showMessageDialog(this, errorMsg, "Chyba", JOptionPane.ERROR_MESSAGE);
                 }
-            }
-            else {
+            } else {
                 student.setXname(xname.getText());
                 student.setFirstName(firstName.getText());
                 student.setLastName(lastName.getText());
                 LocalDataStorage.changeStudent(student);
+                Thread t1 = new Thread(new SaveToDb(student));
+                t1.start();
+                try {
+                    t1.join();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(StudentFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 studentsPaneModel.fireTableDataChanged();
-                new Thread(new SaveToDb(student)).start();
                 cancelStudent(evt);
             }
         } else {
@@ -234,12 +253,11 @@ public class StudentFrame extends javax.swing.JFrame {
         String firstNameInput = firstName.getText();
         String lastNameInput = lastName.getText();
 
-        if(xnameInput.isEmpty()) {
+        if (xnameInput.isEmpty()) {
             errorMsg = "Je třeba zadat xname studenta";
             return false;
             //TODO vyřešit další omezení pro xname - regex??
-        }        
-        else if (firstNameInput.isEmpty()) {
+        } else if (firstNameInput.isEmpty()) {
             errorMsg = "Je třeba zadat jméno studenta";
             return false;
         } else if (lastNameInput.isEmpty()) {
