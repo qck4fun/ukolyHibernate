@@ -106,6 +106,7 @@ public class MainWindow extends JFrame {
                     if(LocalDataStorage.removeStudent(student)) {
                         LocalDataStorage.removeStudent(student);
                         studentsPaneModel.fireTableStructureChanged();
+                        new Thread(new DeleteFromDb(student)).start();
                     }
                     else {
                         JOptionPane.showMessageDialog(null, "Student nejde smazat. Zřejmě je přiřazen k nějakému úkolu.", "Chyba", JOptionPane.ERROR_MESSAGE);
@@ -170,6 +171,7 @@ public class MainWindow extends JFrame {
                     if(LocalDataStorage.removeSubject(subject)) {
                         LocalDataStorage.removeSubject(subject);
                         subjectsPaneModel.fireTableStructureChanged();
+                        new Thread(new DeleteFromDb(subject)).start();
                     }
                     else {
                         JOptionPane.showMessageDialog(null, "Předmět nejde smazat. Zřejmě je přiřazen k nějakému úkolu.", "Chyba", JOptionPane.ERROR_MESSAGE);

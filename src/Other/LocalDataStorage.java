@@ -153,6 +153,7 @@ public class LocalDataStorage {
 
     public static boolean removeStudent(Student student) {
         if (student.getTasks().isEmpty() && student.getSubjects().isEmpty()) {
+            studentsList.remove(student);
             return true;
         } else {
             return false;

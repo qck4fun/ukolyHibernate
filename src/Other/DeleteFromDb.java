@@ -52,7 +52,6 @@ public class DeleteFromDb implements Runnable {
             session.flush();
             session.getTransaction().commit();
         }
-        session.close();
-        
+        //session.close(); //TODO protože nejspíš chyba
     }
 }
