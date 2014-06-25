@@ -5,7 +5,9 @@
  */
 package GUI;
 
+import Other.DeleteFromDb;
 import Other.LocalDataStorage;
+import Other.SaveToDb;
 import Persistent.Student;
 import Persistent.Subject;
 import Persistent.Task;
@@ -165,7 +167,6 @@ public class MainWindow extends JFrame {
                 try {
                     String subjectName = subjectsTable.getModel().getValueAt(subjectsTable.getSelectedRow(), 1).toString();
                     Subject subject = LocalDataStorage.getSubjectName(subjectName);
-                    //System.out.println(subject.getName());
                     if(LocalDataStorage.removeSubject(subject)) {
                         LocalDataStorage.removeSubject(subject);
                         subjectsPaneModel.fireTableStructureChanged();
@@ -228,9 +229,15 @@ public class MainWindow extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     String taskName = tasksTable.getModel().getValueAt(tasksTable.getSelectedRow(), 1).toString();
-                    Task task = LocalDataStorage.getTaskName(taskName);
-                    LocalDataStorage.removeTask(task);
-                    tasksPaneModel.fireTableStructureChanged();
+                    Task task = LocalDataStorage.getTaskName(taskName);                               
+                    if(LocalDataStorage.removeTask(task)) {
+                        LocalDataStorage.removeTask(task);
+                        tasksPaneModel.fireTableStructureChanged();
+                        new Thread(new DeleteFromDb(task)).start();
+                    }
+                    else { // TODO to tu být nemá!
+                        JOptionPane.showMessageDialog(null, "Předmět nejde smazat. Zřejmě je přiřazen k nějakému úkolu.", "Chyba", JOptionPane.ERROR_MESSAGE);
+                    }
                 } catch (ArrayIndexOutOfBoundsException er) {
                     JOptionPane.showMessageDialog(null, "Je třeba vybrat záznam, kterých chcete smazat", "Chyba", JOptionPane.ERROR_MESSAGE);
                 }

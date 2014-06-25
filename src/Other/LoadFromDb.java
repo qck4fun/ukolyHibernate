@@ -4,6 +4,9 @@
  */
 package Other;
 
+import Persistent.Student;
+import Persistent.Subject;
+import Persistent.Task;
 import javax.swing.JOptionPane;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -29,9 +32,9 @@ public class LoadFromDb implements Runnable {
 
             q = session.createQuery("from Task");
             LocalDataStorage.tasksList = q.list();
-
+            
             session.getTransaction().commit();
-            session.close();
+            //session.close(); //TODO protože jinak lazily error blabla
         } catch (HibernateException he) {
             JOptionPane.showMessageDialog(null, "Chyba při načítání z databáze");
             he.printStackTrace(); //TODO smazat

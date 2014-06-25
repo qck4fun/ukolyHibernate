@@ -123,44 +123,39 @@ public class LocalDataStorage {
         return null;
     }
 
-    public static void removeTask(Task task) {
+    public static boolean removeTask(Task task) {
         for (Task t : tasksList) {
             if (t.equals(task)) {
+                task.getStudent().getTasks().remove(task);
+                task.getSubject().getTasks().remove(task);
                 tasksList.remove(task);
-                break;
+                return true;
             }
         }
+        return false;
     }
 
     public static boolean removeSubject(Subject subject) {
-        for (Task t : tasksList) {
-            if(t.getSubject().equals(subject)) {
-                System.out.println(t.getSubject().getName());
-                System.out.println(subject.getName());
-                return false;
+        if (subject.getTasks().isEmpty()) {
+            for (Student s : studentsList) {
+                if(s.removeSubject(subject)) {
+                    s.removeSubject(subject);
+                    subjectsList.remove(subject);
+                    return true;
+                }
+                break;
             }
-            else {
-                System.out.println(t.getSubject().getName());
-                System.out.println(subject.getName());
-                return true;                
-            }
+        } else {
+            return false;
         }
         return false;
     }
 
     public static boolean removeStudent(Student student) {
-        for (Student s : studentsList) {
-            if (s.equals(student)) {
-                for (Task t : tasksList) {
-                    if (t.getStudent().equals(student)) {
-                        return false;
-                    } else {
-                        studentsList.remove(student);
-                        return true;
-                    }
-                }
-            }
+        if (student.getTasks().isEmpty() && student.getSubjects().isEmpty()) {
+            return true;
+        } else {
+            return false;
         }
-        return false;
     }
 }
