@@ -128,6 +128,7 @@ public class LocalDataStorage {
             if (t.equals(task)) {
                 task.getStudent().getTasks().remove(task);
                 task.getSubject().getTasks().remove(task);
+                task.getStudent().removeSubject(task.getSubject());
                 tasksList.remove(task);
                 return true;
             }
@@ -143,7 +144,6 @@ public class LocalDataStorage {
                     subjectsList.remove(subject);
                     return true;
                 }
-                break;
             }
         } else {
             return false;

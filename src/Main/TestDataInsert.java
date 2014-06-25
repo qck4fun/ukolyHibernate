@@ -55,7 +55,7 @@ public class TestDataInsert {
         subjects.get(1).addTask(tasks.get(1));
         subjects.get(2).addTask(tasks.get(2));
         
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = HibernateUtil.getSession();
         session.beginTransaction();
         for(Subject subject : subjects) {
             session.saveOrUpdate(subject);
@@ -72,7 +72,7 @@ public class TestDataInsert {
         students.get(2).addSubject(subjects.get(2));
         students.get(2).addTask(tasks.get(2));
         
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = HibernateUtil.getSession();
         session.beginTransaction();
         for(Student student : students) {
             session.saveOrUpdate(student);
@@ -82,7 +82,7 @@ public class TestDataInsert {
     }
     
     private void insertToDb() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = HibernateUtil.getSession();
         session.beginTransaction();
         
         for(Student student : students) {
@@ -102,6 +102,5 @@ public class TestDataInsert {
         }
         session.flush();
         session.getTransaction().commit();
-        session.close();
     }
 }

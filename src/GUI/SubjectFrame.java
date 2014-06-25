@@ -4,14 +4,11 @@
  */
 package GUI;
 
-import Other.LocalDataStorage; 
-import java.awt.event.ActionEvent; 
-import javax.swing.JButton; 
-import javax.swing.JFrame; 
-import javax.swing.JLabel; 
-import javax.swing.JTextField;
+import Other.LocalDataStorage;
 import Other.SaveToDb;
 import Persistent.Subject;
+import Persistent.Task;
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
 /**
@@ -24,6 +21,7 @@ public class SubjectFrame extends javax.swing.JFrame {
     private Subject subject;
     private String errorMsg;
     private boolean newSubject;
+    private DefaultListModel<Task> defaultTasksListModel = new DefaultListModel<Task>();
 
     /**
      * Creates new form SubjectFrame
@@ -31,6 +29,12 @@ public class SubjectFrame extends javax.swing.JFrame {
     public SubjectFrame(SubjectsPaneModel subjectsPaneModel) {
         this.subjectsPaneModel = subjectsPaneModel;
         initComponents();
+        if (subject == null) {
+            remove(tasksList);
+            remove(tasksListLabel);
+            revalidate();
+            repaint();
+        }
         setTitle("Nový předmět");
         newSubject = true;
     }
@@ -44,6 +48,10 @@ public class SubjectFrame extends javax.swing.JFrame {
         name.setText(subject.getName());
         credits.setText(String.valueOf(subject.getCredits()));
         newSubject = false;
+
+        for (Task t : subject.getTasks()) {
+            defaultTasksListModel.addElement(t);
+        }
     }
 
     /**
@@ -62,6 +70,9 @@ public class SubjectFrame extends javax.swing.JFrame {
         credits = new javax.swing.JTextField();
         saveSubject = new javax.swing.JButton();
         cancelSubject = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tasksList = new javax.swing.JList();
+        tasksListLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -87,32 +98,38 @@ public class SubjectFrame extends javax.swing.JFrame {
             }
         });
 
+        tasksList.setEnabled(false);
+        tasksList.setModel(defaultTasksListModel);
+        jScrollPane1.setViewportView(tasksList);
+
+        tasksListLabel.setText("Úkoly předmětu");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(creditsLabel)
-                            .addComponent(nameLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(name)
-                            .addComponent(credits)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addComponent(saveSubject)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cancelSubject)
-                        .addGap(13, 13, 13)))
-                .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 81, Short.MAX_VALUE)
                 .addComponent(headline)
                 .addGap(75, 75, 75))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(saveSubject)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cancelSubject))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(creditsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(nameLabel)
+                            .addComponent(tasksListLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(name)
+                            .addComponent(credits)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -127,11 +144,17 @@ public class SubjectFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(creditsLabel)
                     .addComponent(credits, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(tasksListLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(37, 37, 37)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveSubject)
                     .addComponent(cancelSubject))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(36, 36, 36))
         );
 
         pack();
@@ -156,12 +179,12 @@ public class SubjectFrame extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(this, errorMsg, "Chyba", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
-                    subject.setName(name.getText());
-                    subject.setCredits(Integer.parseInt(credits.getText()));
-                    LocalDataStorage.changeSubject(subject);
-                    subjectsPaneModel.fireTableDataChanged();
-                    new Thread(new SaveToDb(subject)).start();
-                    cancelClick(evt);
+                subject.setName(name.getText());
+                subject.setCredits(Integer.parseInt(credits.getText()));
+                LocalDataStorage.changeSubject(subject);
+                subjectsPaneModel.fireTableDataChanged();
+                new Thread(new SaveToDb(subject)).start();
+                cancelClick(evt);
             }
         } else {
             JOptionPane.showMessageDialog(this, errorMsg, "Chyba", JOptionPane.ERROR_MESSAGE);
@@ -197,8 +220,11 @@ public class SubjectFrame extends javax.swing.JFrame {
     private javax.swing.JTextField credits;
     private javax.swing.JLabel creditsLabel;
     private javax.swing.JLabel headline;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField name;
     private javax.swing.JLabel nameLabel;
     private javax.swing.JButton saveSubject;
+    private javax.swing.JList tasksList;
+    private javax.swing.JLabel tasksListLabel;
     // End of variables declaration//GEN-END:variables
 }

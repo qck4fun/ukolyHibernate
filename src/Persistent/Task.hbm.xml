@@ -1,25 +1,25 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC
-	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="Persistent">
-	<class name="Task" table="TASKS">
-		<id name="id" 
-                    column="TASK_ID" 
-                    type="long">
-			<generator class="native"></generator>
-		</id>
-		<property name="name" 
-                          column="NAME" 
-                          not-null="true">
-		</property>
-		<property name="description" 
-                          column="DESCRIPTION" 
-                          not-null="true">
-		</property>
-                <many-to-one name="Subject">
-                </many-to-one>
-                <many-to-one name="Student">
-                </many-to-one>
-	</class>
+    <class name="Task" table="TASKS">
+        <id name="id"
+            column="TASK_ID"
+            type="long">
+            <generator class="native"></generator>
+        </id>
+        <property name="name"
+          column="NAME"
+          not-null="true">
+        </property>
+        <property name="description"
+          column="DESCRIPTION"
+          not-null="true">
+        </property>
+        <many-to-one name="Subject">
+        </many-to-one>
+        <many-to-one name="Student">
+        </many-to-one>
+    </class>
 </hibernate-mapping>

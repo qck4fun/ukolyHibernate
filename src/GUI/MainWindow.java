@@ -109,7 +109,7 @@ public class MainWindow extends JFrame {
                         new Thread(new DeleteFromDb(student)).start();
                     }
                     else {
-                        JOptionPane.showMessageDialog(null, "Student nejde smazat. Zřejmě je přiřazen k nějakému úkolu.", "Chyba", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Student nejde smazat, protože by byla narušena integrita databáze.", "Chyba", JOptionPane.ERROR_MESSAGE);
                     }
                 } catch (ArrayIndexOutOfBoundsException er) {
                     JOptionPane.showMessageDialog(null, "Je třeba vybrat záznam, kterých chcete změnit", "Chyba", JOptionPane.ERROR_MESSAGE);
@@ -174,7 +174,7 @@ public class MainWindow extends JFrame {
                         new Thread(new DeleteFromDb(subject)).start();
                     }
                     else {
-                        JOptionPane.showMessageDialog(null, "Předmět nejde smazat. Zřejmě je přiřazen k nějakému úkolu.", "Chyba", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Předmět nejde smazat, protože by byla narušena integrita databáze.", "Chyba", JOptionPane.ERROR_MESSAGE);
                     }
                 } catch (ArrayIndexOutOfBoundsException er) {
                     JOptionPane.showMessageDialog(null, "Je třeba vybrat záznam, kterých chcete smazat", "Chyba", JOptionPane.ERROR_MESSAGE);
@@ -238,7 +238,7 @@ public class MainWindow extends JFrame {
                         new Thread(new DeleteFromDb(task)).start();
                     }
                     else { // TODO to tu být nemá!
-                        JOptionPane.showMessageDialog(null, "Předmět nejde smazat. Zřejmě je přiřazen k nějakému úkolu.", "Chyba", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Úkol nejde smazat, protože by byla narušena integrita databáze.", "Chyba", JOptionPane.ERROR_MESSAGE);
                     }
                 } catch (ArrayIndexOutOfBoundsException er) {
                     JOptionPane.showMessageDialog(null, "Je třeba vybrat záznam, kterých chcete smazat", "Chyba", JOptionPane.ERROR_MESSAGE);

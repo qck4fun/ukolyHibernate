@@ -35,7 +35,7 @@ public class Task {
     
     @Override
     public String toString() {
-        return "|"  + getName() + "| : " + getDescription();
+        return getName();
     }
 
     @Override

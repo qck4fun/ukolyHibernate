@@ -191,11 +191,14 @@ public class TaskFrame extends javax.swing.JFrame {
 
     private void saveTask(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveTask
         if (checkInputData()) {
+            Student student = LocalDataStorage.getTaskUsingXname(splitStudentXname(studentComboInput)).getStudent();
+            Subject subject = LocalDataStorage.getTaskUsingSubject(subjectComboInput.toString()).getSubject();
+            task = new Task(name.getText(), description.getText(), subject, student);
             if (newTask) {
-                Student student = LocalDataStorage.getTaskUsingXname(splitStudentXname(studentComboInput)).getStudent();
-                Subject subject = LocalDataStorage.getTaskUsingSubject(subjectComboInput.toString()).getSubject();
-                task = new Task(name.getText(), description.getText(), subject, student);
                 if (LocalDataStorage.addTask(task)) {
+                    student.addSubject(subject);
+                    student.addTask(task);
+                    subject.addTask(task);
                     tasksPaneModel.fireTableDataChanged();
                     name.setText("");
                     description.setText("");
@@ -206,10 +209,14 @@ public class TaskFrame extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(this, errorMsg, "Chyba", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
+                
+                student.addSubject(subject);
+                student.addTask(task);
+                subject.addTask(task);
                 task.setName(name.getText());
                 task.setDescription(description.getText());
-                task.setStudent((Student)studentsModel.getSelectedItem());
-                task.setSubject((Subject)subjectsModel.getSelectedItem());
+                task.setStudent((Student) studentsModel.getSelectedItem());
+                task.setSubject((Subject) subjectsModel.getSelectedItem());
                 LocalDataStorage.changeTask(task);
                 tasksPaneModel.fireTableDataChanged();
                 new Thread(new SaveToDb(task)).start();

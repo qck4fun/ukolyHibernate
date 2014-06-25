@@ -12,6 +12,9 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import Other.SaveToDb;
 import Persistent.Student;
+import Persistent.Subject;
+import Persistent.Task;
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
 /**
@@ -24,6 +27,8 @@ public class StudentFrame extends javax.swing.JFrame {
     private Student student;
     private String errorMsg;
     private boolean newStudent;
+    private DefaultListModel<Subject> defaultSubjectsListModel = new DefaultListModel<Subject>();
+    private DefaultListModel<Task> defaultTasksListModel = new DefaultListModel<Task>();
 
     /**
      * Creates new form StudentFrame
@@ -45,6 +50,14 @@ public class StudentFrame extends javax.swing.JFrame {
         firstName.setText(student.getFirstName());
         lastName.setText(student.getLastName());
         newStudent = false;
+        
+        for (Subject subject : student.getSubjects()) {
+            defaultSubjectsListModel.addElement(subject);
+        }
+        
+        for (Task task : student.getTasks()) {
+            defaultTasksListModel.addElement(task);
+        }
     }
 
     /**
@@ -65,6 +78,12 @@ public class StudentFrame extends javax.swing.JFrame {
         cancelStudent = new javax.swing.JButton();
         xnameLabel = new javax.swing.JLabel();
         xname = new javax.swing.JTextField();
+        subjectsListLabel = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        subjectsList = new javax.swing.JList();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tasksList = new javax.swing.JList();
+        tasksListLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -92,6 +111,18 @@ public class StudentFrame extends javax.swing.JFrame {
 
         xnameLabel.setText("xname");
 
+        subjectsListLabel.setText("Studuje");
+
+        subjectsList.setEnabled(false);
+        subjectsList.setModel(defaultSubjectsListModel);
+        jScrollPane1.setViewportView(subjectsList);
+
+        tasksList.setEnabled(false);
+        tasksList.setModel(defaultTasksListModel);
+        jScrollPane2.setViewportView(tasksList);
+
+        tasksListLabel.setText("Úkoly");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -101,7 +132,7 @@ public class StudentFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(80, 80, 80)
                         .addComponent(headline)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 90, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -109,18 +140,24 @@ public class StudentFrame extends javax.swing.JFrame {
                                 .addGap(12, 12, 12)
                                 .addComponent(saveStudent)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(cancelStudent)
-                                .addGap(9, 9, 9))
+                                .addComponent(cancelStudent))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lastNameLabel)
-                                    .addComponent(firstNameLabel)
-                                    .addComponent(xnameLabel))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(subjectsListLabel)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(lastNameLabel)
+                                            .addComponent(firstNameLabel)
+                                            .addComponent(xnameLabel)))
+                                    .addComponent(tasksListLabel))
                                 .addGap(7, 7, 7)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(firstName, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
+                                    .addComponent(firstName)
                                     .addComponent(lastName)
-                                    .addComponent(xname))))))
+                                    .addComponent(xname)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
+                        .addGap(9, 9, 9)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -128,7 +165,7 @@ public class StudentFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(headline)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(xname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(xnameLabel))
@@ -140,7 +177,15 @@ public class StudentFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lastNameLabel)
                     .addComponent(lastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(subjectsListLabel)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 147, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2)
+                    .addComponent(tasksListLabel))
+                .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveStudent)
                     .addComponent(cancelStudent))
@@ -208,9 +253,15 @@ public class StudentFrame extends javax.swing.JFrame {
     private javax.swing.JTextField firstName;
     private javax.swing.JLabel firstNameLabel;
     private javax.swing.JLabel headline;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField lastName;
     private javax.swing.JLabel lastNameLabel;
     private javax.swing.JButton saveStudent;
+    private javax.swing.JList subjectsList;
+    private javax.swing.JLabel subjectsListLabel;
+    private javax.swing.JList tasksList;
+    private javax.swing.JLabel tasksListLabel;
     private javax.swing.JTextField xname;
     private javax.swing.JLabel xnameLabel;
     // End of variables declaration//GEN-END:variables

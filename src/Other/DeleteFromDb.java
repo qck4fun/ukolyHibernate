@@ -34,7 +34,7 @@ public class DeleteFromDb implements Runnable {
     @Override
     public void run() {
         
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = HibernateUtil.getSession();
         session.beginTransaction();
         
         if(subject != null) {

@@ -21,7 +21,7 @@ public class LoadFromDb implements Runnable {
     @Override
     public void run() {
         try {
-            Session session = HibernateUtil.getSessionFactory().openSession();
+            Session session = HibernateUtil.getSession();
             session.beginTransaction();
 
             Query q = session.createQuery("from Student");
@@ -34,7 +34,7 @@ public class LoadFromDb implements Runnable {
             LocalDataStorage.tasksList = q.list();
             
             session.getTransaction().commit();
-            //session.close(); //TODO protože jinak lazily error blabla
+            session.close(); //TODO protože jinak lazily error blabla
         } catch (HibernateException he) {
             JOptionPane.showMessageDialog(null, "Chyba při načítání z databáze");
             he.printStackTrace(); //TODO smazat
