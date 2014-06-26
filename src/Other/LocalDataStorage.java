@@ -9,6 +9,7 @@ import Persistent.Subject;
 import Persistent.Task;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Třída představující lokální úložiště pro data z databáze
@@ -207,18 +208,37 @@ public class LocalDataStorage {
      * @return true pokud se podaří smazat
      */
     public static boolean removeTask(Task task) {
-        System.out.println(task.getStudent().getSubjects().size());
         for (Task t : tasksList) {
             if (t.equals(task)) {
                 task.getStudent().getTasks().remove(task);
                 task.getSubject().getTasks().remove(task);
-                task.getStudent().removeSubject(task.getSubject());
+                if(lastTask(task.getStudent())) {
+                    task.getStudent().removeSubject(task.getSubject());
+                }
                 // TODO když má dva úkoly ze stejného předmětu, tak se to smaže taky a to je špatně!
                 tasksList.remove(task);
                 return true;
             }
         }
         return false;
+    }
+    
+    /**
+     * Metoda kontroluje zda mazaný úkol patří ke stejnému předmětu 
+     * 
+     * ¨
+     * @param student  
+     * @return true pokud je to poslední task
+     */
+    private static boolean lastTask(Student student) {
+        Set studentTasks = student.getTasks();
+        List globalTasks = LocalDataStorage.tasksList;
+        for(Object t : studentTasks) {
+            if(globalTasks.contains(t)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

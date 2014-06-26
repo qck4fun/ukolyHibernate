@@ -71,6 +71,5 @@ public class SaveToDb implements Runnable {
             session.flush();
             session.getTransaction().commit();
         }
-        //session.close(); //TODO protože chyby jinak asi
     }
 }

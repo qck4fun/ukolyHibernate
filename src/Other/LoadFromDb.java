@@ -35,7 +35,6 @@ public class LoadFromDb implements Runnable {
             LocalDataStorage.tasksList = q.list();
             
             session.getTransaction().commit();
-            //session.close(); //TODO protože jinak lazily error blabla
         } catch (HibernateException he) {
             JOptionPane.showMessageDialog(null, "Chyba při načítání z databáze");
         }

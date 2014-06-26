@@ -264,8 +264,8 @@ public class TaskFrame extends javax.swing.JFrame {
 
     /**
      * Metoda sloužící k zavření tohoto okna
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void cancelTask(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelTask
         this.dispose();
@@ -299,9 +299,12 @@ public class TaskFrame extends javax.swing.JFrame {
     private boolean checkInputData() {
         String nameInput = name.getText();
         String descriptionInput = description.getText();
-        studentComboInput = studentsModel.getSelectedItem().toString();
-        subjectComboInput = subjectsModel.getSelectedItem().toString(); //TODO nullpointer!!!
-
+        if (studentsModel.getSelectedItem() != null) {
+            studentComboInput = studentsModel.getSelectedItem().toString();
+        }
+        if (subjectsModel.getSelectedItem() != null) {
+            subjectComboInput = subjectsModel.getSelectedItem().toString();
+        }
         if (nameInput.isEmpty()) {
             errorMsg = "Úkol musí mít název";
             return false;
@@ -320,8 +323,8 @@ public class TaskFrame extends javax.swing.JFrame {
 
     /**
      * Privátní metoda, která rozdělí vstupní text a vrátí pouze xname
-     * 
-     * @param studentXname 
+     *
+     * @param studentXname
      * @return xname
      */
     private String splitStudentXname(String studentXname) {

@@ -17,6 +17,7 @@ import org.hibernate.classic.Session;
  */
 public class HibernateUtil {
     private static Session session;
+    private static SessionFactory sessionFactory;
     
     /**
      * Samotná inicializace session
@@ -24,7 +25,7 @@ public class HibernateUtil {
     static {
         try {
             // Create the SessionFactory from hibernate.cfg.xml
-            SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+            sessionFactory = new Configuration().configure().buildSessionFactory();
             session = sessionFactory.openSession();
         } catch (Throwable ex) {
             JOptionPane.showMessageDialog(null, "Nastal problém s inicializací session", "Chyba", JOptionPane.ERROR_MESSAGE);

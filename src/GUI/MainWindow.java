@@ -316,7 +316,7 @@ public class MainWindow extends JFrame {
                         }
                         tasksPaneModel.fireTableStructureChanged();
                     }
-                    else { // TODO to tu být nemá!
+                    else {
                         JOptionPane.showMessageDialog(null, "Úkol nejde smazat, protože by byla narušena integrita databáze.", "Chyba", JOptionPane.ERROR_MESSAGE);
                     }
                 } catch (ArrayIndexOutOfBoundsException er) {
