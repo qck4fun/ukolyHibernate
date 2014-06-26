@@ -9,8 +9,9 @@ package Persistent;
 import java.util.Objects;
 
 /**
+ * Třída reprezentující úkol - jedna z hlavních entit databáze
  *
- * @author adam
+ * @author Adam Žák
  */
 public class Task {
     
@@ -22,10 +23,21 @@ public class Task {
     private Subject subject;
     private Student student;
     
+    /**
+     * Bezparametrický konstruktor třídy Task
+     */
     public Task() {
         super();
     }
     
+    /**
+     * Konstruktor třídy Task
+     * 
+     * @param name 
+     * @param topic 
+     * @param subject 
+     * @param student 
+     */
     public Task(String name, String topic, Subject subject, Student student) {
         this.name = name;
         this.description = topic;
@@ -33,11 +45,22 @@ public class Task {
         this.student = student;
     }
     
+    /**
+     * Přepsaná metoda toString
+     * 
+     * @return textový výpis
+     */
     @Override
     public String toString() {
         return getName();
     }
 
+    /**
+     * Přepsaná metoda equals
+     * 
+     * @param obj 
+     * @return true pokud se jedná o ten samý objekt
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -62,6 +85,11 @@ public class Task {
         return true;
     }
 
+    /**
+     * Přepsaná metoda hashCode
+     * 
+     * @return hash
+     */
     @Override
     public int hashCode() {
         int hash = 3;

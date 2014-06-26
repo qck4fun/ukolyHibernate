@@ -1,0 +1,4 @@
+Aplikace slouží k vytváøení, editování a mazání záznamù v databázi. Konkrétnì se pracuje se entitami Student, Subject a Task. Nejdùležitìjší je tøída Task, která si obsahuje informaci jak o studentovi, tak o pøedmìtu. Pøedmìt obsahuje seznam všech úkolù, ktere jsou pro nìj vypsány a student si pamatuje, které studuje pøedmìty a jaké má úkoly.
+
+AUTHOR: Adam Žák
+version: 1.0

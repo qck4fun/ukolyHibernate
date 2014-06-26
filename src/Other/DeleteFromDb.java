@@ -10,8 +10,9 @@ import Persistent.Task;
 import org.hibernate.Session;
 
 /**
- *
- * @author adam
+ * Třídá, která se stará o výmat dat z databáze
+ * 
+ * @author Adam Žák
  */
 public class DeleteFromDb implements Runnable {
     
@@ -19,18 +20,36 @@ public class DeleteFromDb implements Runnable {
     private Student student;
     private Task task;
     
+    /**
+     * Konstruktor třídy DeleteFromDb
+     * 
+     * @param subject 
+     */
     public DeleteFromDb(Subject subject) {
         this.subject = subject;
     }
     
+    /**
+     * Konstruktor třídy DeleteFromDb
+     * 
+     * @param student  
+     */
     public DeleteFromDb(Student student) {
         this.student = student;
     }
     
+    /**
+     * Konstruktor třídy DeleteFromDb
+     * 
+     * @param task  
+     */
     public DeleteFromDb(Task task) {
        this.task = task; 
     }
 
+    /**
+     * Metoda obsluhující mazání dat z databáze
+     */
     @Override
     public void run() {
         

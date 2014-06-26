@@ -4,20 +4,21 @@
  */
 package Other;
 
-import Persistent.Student;
-import Persistent.Subject;
-import Persistent.Task;
 import javax.swing.JOptionPane;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
 /**
- *
- * @author adam
+ * Třída LoadFromDb se stará o načtení dat z databáze při spuštění programu
+ * 
+ * @author Adam Žák
  */
 public class LoadFromDb implements Runnable {
 
+    /**
+     * Metoda, která stáhne data z db a uloží je do lokálního úložiště
+     */
     @Override
     public void run() {
         try {
@@ -37,7 +38,6 @@ public class LoadFromDb implements Runnable {
             //session.close(); //TODO protože jinak lazily error blabla
         } catch (HibernateException he) {
             JOptionPane.showMessageDialog(null, "Chyba při načítání z databáze");
-            he.printStackTrace(); //TODO smazat
         }
     }
 }

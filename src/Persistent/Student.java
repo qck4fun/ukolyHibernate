@@ -6,15 +6,14 @@
 
 package Persistent;
 
-import Persistent.Subject;
-import Persistent.Task;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 /**
+ * Třída reprezentující studenta - jednu z hlavních entit databáze
  *
- * @author adam
+ * @author Adam Žák
  */
 public class Student {
     
@@ -27,10 +26,20 @@ public class Student {
     private Set<Task> tasks;
     private Set<Subject> subjects;
     
+    /**
+     * Bezparametrický konstruktor třídy Student
+     */
     public Student() {
         super();
     }
     
+    /**
+     * Konstruktor třídy Student
+     * 
+     * @param xname
+     * @param name
+     * @param lastName 
+     */
     public Student(String xname, String name, String lastName) {
         this.xname = xname;
         this.firstName = name;
@@ -40,27 +49,61 @@ public class Student {
         subjects = new HashSet<Subject>();
     }
     
+    /**
+     * Metoda přidávají úkol k instanci studenta
+     * 
+     * @param  task
+     * @return true pokud se podaří přidat
+     */
     public boolean addTask(Task task) {
         return tasks.add(task);
     }
     
+    /**
+     * Metoda odstraňující odkaz na úkol ze seznamu instance studenta
+     * 
+     * @param task
+     * @return true pokud se podaří smazat
+     */
     public boolean removeTask(Task task) {
         return getTasks().remove(task);
     }
     
+    /**
+     * Metoda přídávající předmět k instanci studenta
+     * 
+     * @param subject 
+     * @return true pokud se podaří přidat
+     */
     public boolean addSubject(Subject subject) {
         return subjects.add(subject);
     }
     
+    /**
+     * Metoda odstraňující odkaz na předmět ze seznamu instance studenta
+     * 
+     * @param subject 
+     * @return true pokud se podaří smazat
+     */
     public boolean removeSubject(Subject subject) {
         return getSubjects().remove(subject);
     }
     
+    /**
+     * Přepsaná metoda toString
+     * 
+     * @return textový výpis
+     */
     @Override
     public String toString() {
         return getFirstName() + " " + getLastName() + " (" + getXname() + ")";
     }
 
+    /**
+     * Přepsaná metoda hashCode
+     * 
+     * @return hash
+     */
     @Override
     public int hashCode() {
         int hash = 3;
@@ -68,6 +111,12 @@ public class Student {
         return hash;
     }
 
+    /**
+     * Přepsaná metoda equals
+     * 
+     * @param obj 
+     * @return true pokud jde o ten samý objekt
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {

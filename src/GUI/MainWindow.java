@@ -7,7 +7,6 @@ package GUI;
 
 import Other.DeleteFromDb;
 import Other.LocalDataStorage;
-import Other.SaveToDb;
 import Persistent.Student;
 import Persistent.Subject;
 import Persistent.Task;
@@ -18,8 +17,9 @@ import java.util.logging.Logger;
 import javax.swing.*;
 
 /**
- *
- * @author adam
+ * Třída MainWindow je třídou starající se o kompletní grafiku aplikace
+ * 
+ * @author Adam Žák
  */
 public class MainWindow extends JFrame {
 
@@ -40,10 +40,16 @@ public class MainWindow extends JFrame {
     private JButton changeTask;
     private JButton removeTask;
 
+    /**
+     * Konstruktor třídy MainWindow, která se stará o grafiku
+     */
     public MainWindow() {
         init();
     }
 
+    /**
+     * Privátní metoda sloužící k inicializaci hlavních komponent
+     */
     private void init() {
         setTitle("Hibernate task application");
         setSize(1000, 400);
@@ -63,6 +69,9 @@ public class MainWindow extends JFrame {
         setContentPane(tabbedPane);
     }
 
+    /**
+     * Privátní třída sloužící k inicializaci tabu se studenty
+     */
     private void initStudentsPane() {
         studentsPanel = new JPanel();
         studentsPanel.setLayout(new BoxLayout(studentsPanel, BoxLayout.PAGE_AXIS));
@@ -76,6 +85,11 @@ public class MainWindow extends JFrame {
         JButton addStudent = new JButton("Přidat studenta");
         addStudent.addActionListener(new ActionListener() {
 
+            /**
+             * Po kliknutí se spustí okno na přidání nového studenta
+             * 
+             * @param e
+             */
             @Override
             public void actionPerformed(ActionEvent e) {
                 new StudentFrame(studentsPaneModel).setVisible(true);
@@ -85,6 +99,11 @@ public class MainWindow extends JFrame {
         changeStudent = new JButton("Upravit studenta");
         changeStudent.addActionListener(new ActionListener() {
 
+            /**
+             * Po kliknutí se spustí okno pro úpravu studenta
+             * 
+             * @param e
+             */
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -100,6 +119,11 @@ public class MainWindow extends JFrame {
         removeStudent = new JButton("Smazat studenta");
         removeStudent.addActionListener(new ActionListener() {
 
+            /**
+             * Po kliknutí dojde ke smazání studenta
+             * 
+             * @param e
+             */
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -133,6 +157,9 @@ public class MainWindow extends JFrame {
         studentsPanel.add(buttonPanel);
     }
 
+    /**
+     * Privátní metoda sloužící k inicializaci tabu s předměty
+     */
     private void initSubjectsPane() {
         subjectsPanel = new JPanel();
         subjectsPanel.setLayout(new BoxLayout(subjectsPanel, BoxLayout.PAGE_AXIS));
@@ -146,16 +173,24 @@ public class MainWindow extends JFrame {
         JButton addSubject = new JButton("Přidat předmět");
         addSubject.addActionListener(new ActionListener() {
 
+            /**
+             * Po kliknutí se spustí okno pro přidání nového předmětu
+             * 
+             * @param e
+             */
             @Override
             public void actionPerformed(ActionEvent e) {
-                new SubjectFrame(subjectsPaneModel).setVisible(true);
-                //TODO proč to má tak složitě?
             }
         });
 
         changeSubject = new JButton("Upravit předmět");
         changeSubject.addActionListener(new ActionListener() {
 
+            /**
+             * Po kliknutí se spustí okno pro úpravu předmětu
+             * 
+             * @param e
+             */
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -171,6 +206,11 @@ public class MainWindow extends JFrame {
         removeSubject = new JButton("Smazat předmět");
         removeSubject.addActionListener(new ActionListener() {
 
+            /**
+             * Po kliknutí dojde ke smazání předmětu
+             * 
+             * @param e
+             */
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -204,6 +244,9 @@ public class MainWindow extends JFrame {
         subjectsPanel.add(buttonPanel);
     }
 
+    /**
+     * Privátní metoda sloužící k inicializaci tabu s úkoly
+     */
     private void initTasksPane() {
         tasksPanel = new JPanel();
         tasksPanel.setLayout(new BoxLayout(tasksPanel, BoxLayout.PAGE_AXIS));
@@ -217,6 +260,11 @@ public class MainWindow extends JFrame {
         JButton addTask = new JButton("Přidat úkol");
         addTask.addActionListener(new ActionListener() {
 
+            /**
+             * Po kliknutí se spustí ono pro přidání úkolu
+             * 
+             * @param e
+             */
             @Override
             public void actionPerformed(ActionEvent e) {
                 new TaskFrame(tasksPaneModel).setVisible(true);
@@ -226,6 +274,11 @@ public class MainWindow extends JFrame {
         changeTask = new JButton("Změnit úkol");
         changeTask.addActionListener(new ActionListener() {
 
+            /**
+             * Po kliknutí se spustí okno pro změnu předmětu
+             * 
+             * @param e
+             */
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -241,6 +294,11 @@ public class MainWindow extends JFrame {
         removeTask = new JButton("Smazat úkol");
         removeTask.addActionListener(new ActionListener() {
 
+            /**
+             * Po kliknutí dojde ke smazání úkolu
+             * 
+             * @param e
+             */
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
